@@ -29,10 +29,15 @@ func loginScreen() {
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		// rl.DrawTexture(texture, rl.LoadImageFromScreen().Width/2, rl.LoadImageFromScreen().Height/2, rl.White)
-
 		rl.ClearBackground(purple1)
 		rl.DrawText("Congrats! You created your first window!", 190, 200, 20, rl.LightGray)
 
 		rl.EndDrawing()
 	}
+}
+
+func centraliseInX(size int) int32 {
+	var centralXCoordinate = rl.GetScreenWidth()/2 - size/2
+
+	return int32(centralXCoordinate)
 }
