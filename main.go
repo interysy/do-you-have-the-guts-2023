@@ -138,16 +138,22 @@ func main() {
 			rl.DrawText(fileText, desktopSingleMargin+7, desktopSingleMargin+int32(newHeight)+5, 12, rl.Orange)
 
 			if password == true {
-				//rl.DrawRectangle(desktopSingleMargin, desktopSingleMargin, int32(SCREENWIDTH)-desktopDoubleMargin, int32(SCREENHEIGHT)-desktopDoubleMargin, rl.Purple)
 				rectX := centraliseInX(300)
 				rectY := centraliseInY(100)
+				//TODO: use fergus' art to draw a rectangle with a border
+				//TODO: Fix this so that the text is centralised properly
 				rl.DrawRectangle(rectX, rectY, 300, 100, rl.Orange)
-				rl.DrawText("Enter Password", centraliseInX(int(rl.MeasureText("Enter Password", 12))), centraliseInY(100)+50, 16, rl.White)
-				if getInput() {
-					fmt.Print("password correct")
-				}
+
+				rl.DrawText("Enter Password", centraliseInX(int(rl.MeasureText("Enter Password", 12))), centraliseInY(100)+100, 16, rl.White)
 				for i := 0; i < len(input); i++ {
-					rl.DrawCircle(rectX+int32(i*50)+25, rectY+50, 20, rl.White)
+					rl.DrawCircle(rectX+int32(i*(300/4)), rectY+50, 25, rl.White)
+				}
+				if getInput() {
+					for i := 0; i < len(input); i++ {
+						rl.DrawCircle(rectX+int32(i*(300/4)), rectY+50, 25, rl.Black)
+					}
+					rl.PlaySound(fxEmail)
+					fmt.Print("password correct")
 				}
 			}
 		}
