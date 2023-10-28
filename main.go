@@ -127,7 +127,7 @@ func main() {
 					if i < 10 {
 						fmt.Println(i)
 						rl.PlaySound(fxCarve)
-						particles = generateParticles(10, centraliseInX(25), 100)
+						particles = generateParticles(25, centraliseInX(25), 100)
 					}
 					if i == 9 {
 						state = "desktop"
@@ -186,7 +186,7 @@ func main() {
 						rl.DrawCircle(rectX+int32(i*(300/4))+25, rectY+50, 25, rl.Black)
 					}
 					rl.PlaySound(fxEmail)
-					authenticated = true
+					authenticated = !authenticated
 				}
 			}
 			if email_popout == true {
@@ -259,22 +259,22 @@ func main() {
 					//collision check on email 1,2,3,4
 					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 50, 300, 48)) {
 						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout1 = true
+							real_email_popout1 = !real_email_popout1
 						}
 					}
 					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 100, 300, 48)) {
 						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout2 = true
+							real_email_popout2 = !real_email_popout2
 						}
 					}
 					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 150, 300, 48)) {
 						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout3 = true
+							real_email_popout3 = !real_email_popout3
 						}
 					}
 					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 200, 300, 48)) {
 						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout4 = true
+							real_email_popout4 = !real_email_popout4
 						}
 					}
 
@@ -297,14 +297,14 @@ func main() {
 			//Collision check on email icon
 			if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(45, float32(rl.GetScreenHeight()-40)), 18) {
 				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-					email_popout = true
+					email_popout = !email_popout 
 				}
 			}
 
 			// Collision on file explorer icon
 			if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(90, float32(rl.GetScreenHeight()-40)), 18) {
 				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-					file_explorer_popout = true
+					file_explorer_popout = !file_explorer_popout 
 				}
 			}
 		}
