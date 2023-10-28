@@ -8,6 +8,7 @@ var passwordString = "1234"
 var input = ""
 var prev = rl.KeyNull
 
+
 func getInput() bool {
 	key := rl.GetKeyPressed()
 	if prev == int(key) {
@@ -56,6 +57,7 @@ func getInput() bool {
 	prev = int(key)
 	if len(input) >= 4 {
 		if passwordString == input {
+			rl.PlaySound(fxScream)
 			return true
 		}
 		return false

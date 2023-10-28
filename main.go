@@ -40,6 +40,9 @@ func main() {
 	rl.InitAudioDevice()
 	fxCarve := rl.LoadSound("assets/audio/carve_pumpkin.wav")
 	fxEmail := rl.LoadSound("assets/audio/email.wav")
+	fxRunning := rl.LoadMusicStream("assets/audio/running.ogg")
+	fxStartup := rl.LoadSound("assets/audio/startup.ogg")
+	fxScream  := rl.LoadSound("assets/audio/scream.ogg")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
 
@@ -60,6 +63,7 @@ func main() {
 	var cult = rl.LoadTexture("assets/cult.png")
 	var goatHead = rl.LoadTexture("assets/goathead.png")
 	var calendar = rl.LoadTexture("assets/calendar.png")
+	var desktop_frame = rl.LoadTexture("assets/desktop_frame.png")
 
 	var i = 1
 	var particles []rl.Rectangle
@@ -81,6 +85,7 @@ func main() {
 	}
 
 	var textureOrder = []string{"email", "file_explorer", "chrome"}
+	rl.PlayMusicStream(fxRunning)
 
 	var fileExplorerTextures = map[string]File{
 		"textFile1":  File{texture: textFile, open: false, file: popout},
@@ -94,8 +99,6 @@ func main() {
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		if state == "login" {
-			//loginScreen()
-			getInput()
 			var pumpkin rl.Texture2D = pumpkins[i-1] // = rl.LoadTexture("assets/pumpkins/pumpkin_stage_1.png")
 
 			rl.ClearBackground(PURPLE1)
@@ -124,6 +127,7 @@ func main() {
 					}
 					if i == 9 {
 						state = "desktop"
+						rl.PlaySound(fxStartup)
 					}
 
 				}
@@ -139,6 +143,7 @@ func main() {
 
 			rl.DrawRectangle(desktopSingleMargin, desktopSingleMargin, int32(SCREENWIDTH)-desktopDoubleMargin, int32(SCREENHEIGHT)-desktopDoubleMargin, rl.Purple)
 			rl.DrawRectangle(25, int32(windowHeight)-60, int32(windowWidth)-50, 40, rl.DarkPurple)
+			rl.DrawTexture(desktop_frame, 0, 0, rl.DarkPurple)
 			//call draw function that passes in the map
 
 			drawTaskbar(textures, textureOrder)
@@ -166,8 +171,6 @@ func main() {
 				rectX := centraliseInX(300)
 				rectY := centraliseInY(100)
 
-				//TODO: use fergus' art to draw a rectangle with a border
-				//TODO: Fix this so that the text is centralised properly
 				rl.DrawRectangle(rectX, rectY, 300, 100, rl.Orange)
 
 				rl.DrawText("Enter Password", centraliseInX(int(rl.MeasureText("Enter Password", 12)))-10, centraliseInY(100)+105, 16, rl.White)
