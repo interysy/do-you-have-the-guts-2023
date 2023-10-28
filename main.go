@@ -49,6 +49,8 @@ func main() {
 	var mail_notif rl.Texture2D = rl.LoadTexture("assets/mail_notif.png")
 	var file_explorer rl.Texture2D = rl.LoadTexture("assets/file_explorer.png")
 	var popout rl.Texture2D = rl.LoadTexture("assets/popout.png")
+	var textFile = rl.LoadTexture("assets/txt_file.png")
+	var imageFile = rl.LoadTexture("assets/image.png")
 
 	var i = 1
 	var particles []rl.Rectangle
@@ -70,6 +72,16 @@ func main() {
 	}
 
 	var textureOrder = []string{"email", "file_explorer", "chrome"}
+
+	var fileExplorerTextures = map[string]rl.Texture2D{
+		"textFile1":  textFile,
+		"textFile2":  textFile,
+		"textFile3":  textFile,
+		"imageFile1": imageFile,
+		"imageFile2": imageFile,
+		"imageFile3": imageFile,
+	}
+
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		if state == "login" {
@@ -138,10 +150,6 @@ func main() {
 					password = !password
 				}
 			}
-			// var fileTextWidth = rl.MeasureText(fileText, 12)
-			//var arr = rl.MeasureTextEx(rl.GetFontDefault(), fileText, 12, 1)
-			//var fileTextWidth = arr.X
-			//var fileTextHeight = arr.Y
 
 			rl.DrawText(fileText, desktopSingleMargin+7, desktopSingleMargin+int32(newHeight)+5, 12, rl.Orange)
 
@@ -208,6 +216,7 @@ func main() {
 
 			if file_explorer_popout == true {
 				rl.DrawTexture(popout, 400, 25, rl.White)
+				populateFileExplorer(fileExplorerTextures)
 				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(745, 35), 10) {
 					if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 						file_explorer_popout = false
@@ -291,4 +300,37 @@ func drawTaskbar(textures map[string]rl.Texture2D, textureOrder []string) {
 			rl.White)
 		totalIconWidth += int(texture.Width) + 10
 	}
+}
+
+func populateFileExplorer(fileExplorerTextures map[string]rl.Texture2D) {
+
+	var order = []string{"textFile1", "textFile2", "textFile3", "imageFile1", "imageFile2", "imageFile3"}
+	var i float32 = 0
+	var g bool = false
+	var nextLineY = 0
+	for key := range order {
+		//fmt.Println(string(key) + "\n")
+		var texture = fileExplorerTextures[order[key]]
+		if g {
+			nextLineY = int(texture.Height*2 + 10)
+		} else {
+			nextLineY = 0
+		}
+
+		rl.DrawTexturePro(texture, //texture
+			rl.NewRectangle(0, 0, float32(texture.Width), float32(texture.Height)),
+			rl.NewRectangle(
+				float32(400)+float32(texture.Width)+((float32(texture.Width)*2+10)*i), //x
+				float32(25)+float32(texture.Height)+float32(nextLineY),                //y
+				float32(texture.Width)*2,   //width
+				float32(texture.Height)*2), //height
+			rl.NewVector2(0, 0),
+			0,
+			rl.White)
+		if g {
+			i++
+		}
+		g = !g
+	}
+
 }
