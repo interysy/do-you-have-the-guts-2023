@@ -51,33 +51,37 @@ type Particle struct {
 }
 
 
-func generateParticles(num_particles int, x int32, y int32) []Particle {
+func generateParticles(num_particles int, x int32, y int32) []rl.Rectangle{
 	var deviation int32 = 10
-	var particles []Particle
+	particles := make([]rl.Rectangle, num_particles)
 
 	for i := 0; i < num_particles; i++ {
-		particles = append(particles, Particle{x+rand.Int31n(deviation), y+rand.Int31n(deviation)})
+		particle = rl.Rectangle{}
+		particle.X = float32(x + rand.Int31n(deviation))
+		particle.Y = float32(y + rand.Int31n(deviation))
+		particle.Width = 25 
+		particle.Height = 25
 	}
 
 	return particles
 }
 
-func updateParticles(particles []Particle) []Partices {
+func updateParticles(particles []rl.Rectangle) []rl.Rectangle{
 	var gravity int32 = 10
 
 	for _, particle := range particles {
-		particle.x += rand.Int31n(deviation)
-		particle.y += gravity // might need to be -
+		particle.X += rand.Int31n(deviation)
+		particle.Y += gravity // might need to be -
 	}
   
 	return particles
 }
 
-func renderParticles(particles []Particle) {
+func renderParticles(particles []rl.Rectangle) {
 	var colour = rl.Gray
 
 	//TODO Add random to colour
 	for _, particle := range particles {
-		rl.DrawRectangle()
+		rl.DrawRectanglerec(particle, colour)
 	}
 }
