@@ -25,6 +25,7 @@ var (
 )
 
 var state string = "login"
+var password bool = false
 
 func main() {
 
@@ -126,6 +127,7 @@ func main() {
 				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 					rl.PlaySound(fxEmail)
 					textures["email"] = mail_notif
+					password = !password
 				}
 			}
 			// var fileTextWidth = rl.MeasureText(fileText, 12)
@@ -135,6 +137,19 @@ func main() {
 
 			rl.DrawText(fileText, desktopSingleMargin+7, desktopSingleMargin+int32(newHeight)+5, 12, rl.Orange)
 
+			if password == true {
+				//rl.DrawRectangle(desktopSingleMargin, desktopSingleMargin, int32(SCREENWIDTH)-desktopDoubleMargin, int32(SCREENHEIGHT)-desktopDoubleMargin, rl.Purple)
+				rectX := centraliseInX(300)
+				rectY := centraliseInY(100)
+				rl.DrawRectangle(rectX, rectY, 300, 100, rl.Orange)
+				rl.DrawText("Enter Password", centraliseInX(int(rl.MeasureText("Enter Password", 12))), centraliseInY(100)+50, 16, rl.White)
+				if getInput() {
+					fmt.Print("password correct")
+				}
+				for i := 0; i < len(input); i++ {
+					rl.DrawCircle(rectX+int32(i*50)+25, rectY+50, 20, rl.White)
+				}
+			}
 		}
 		rl.EndDrawing()
 	}

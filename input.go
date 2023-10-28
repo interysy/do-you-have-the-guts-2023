@@ -1,12 +1,10 @@
 package main
 
 import (
-	"fmt"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-var password = "1234"
+var passwordString = "1234"
 var input = ""
 var prev = rl.KeyNull
 
@@ -47,10 +45,11 @@ func getInput() bool {
 		input += "9"
 		break
 	}
-	fmt.Print(string(key) + "\n")
+	//fmt.Print(string(key) + "\n")
 	prev = int(key)
 	if len(input) == 4 {
-		if password == input {
+		if passwordString == input {
+			input = ""
 			return true
 		} else {
 			input = ""
