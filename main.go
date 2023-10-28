@@ -42,9 +42,11 @@ func main() {
 	var secretFile rl.Texture2D = rl.LoadTexture("assets/lock.png")
 
 	var chrome rl.Texture2D = rl.LoadTexture("assets/chrome.png")
-	var hambuga rl.Texture2D = rl.LoadTexture("assets/hambuga.png")
+	//var hambuga rl.Texture2D = rl.LoadTexture("assets/hambuga.png")
 	var mail rl.Texture2D = rl.LoadTexture("assets/mail.png")
 	var mail_notif rl.Texture2D = rl.LoadTexture("assets/mail_notif.png")
+	var file_explorer rl.Texture2D = rl.LoadTexture("assets/file_explorer.png")
+	var popout rl.Texture2D = rl.LoadTexture("assets/popout.png")
 
 	var i = 1
 	var particles []rl.Rectangle
@@ -52,15 +54,18 @@ func main() {
 	var windowHeight = rl.GetScreenHeight()
 	var windowWidth = rl.GetScreenWidth()
 
+	var email_popout = false
+	var file_explorer_popout = false
+
 	//object containing name of texture and texture location
 
 	var textures = map[string]rl.Texture2D{
-		"chrome":  chrome,
-		"hambuga": hambuga,
-		"email":   mail,
+		"chrome":        chrome,
+		"file_explorer": file_explorer,
+		"email":         mail,
 	}
 
-	var textureOrder = []string{"hambuga", "chrome", "email"}
+	var textureOrder = []string{"email", "file_explorer", "chrome"}
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		if state == "login" {
@@ -133,6 +138,28 @@ func main() {
 			//var fileTextHeight = arr.Y
 
 			rl.DrawText(fileText, desktopSingleMargin+7, desktopSingleMargin+int32(newHeight)+5, 12, rl.Orange)
+
+			if email_popout == true {
+				rl.DrawTexture(popout, 25, 25, rl.White)
+			}
+
+			if file_explorer_popout == true {
+				rl.DrawTexture(popout, 400, 25, rl.White)
+			}
+
+			//Collision check on email icon
+			if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(45, float32(rl.GetScreenHeight()-40)), 18) {
+				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+					email_popout = true
+				}
+			}
+
+			// Collision on file explorer icon
+			if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(90, float32(rl.GetScreenHeight()-40)), 18) {
+				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+					file_explorer_popout = true
+				}
+			}
 
 		}
 		rl.EndDrawing()
