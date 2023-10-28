@@ -32,6 +32,7 @@ type File struct {
 	texture rl.Texture2D
 	open    bool
 	file    rl.Texture2D
+	name    string
 }
 
 func main() {
@@ -90,12 +91,12 @@ func main() {
 	rl.PlayMusicStream(fxRunning)
 
 	var fileExplorerTextures = map[string]File{
-		"textFile1":  File{texture: textFile, open: false, file: popout},
-		"textFile2":  File{texture: textFile, open: false, file: popout},
-		"textFile3":  File{texture: textFile, open: false, file: popout},
-		"imageFile1": File{texture: imageFile, open: false, file: cult},
-		"imageFile2": File{texture: imageFile, open: false, file: goatHead},
-		"imageFile3": File{texture: imageFile, open: false, file: calendar},
+		"textFile1":  File{texture: textFile, open: false, file: popout, name: "text"},
+		"textFile2":  File{texture: textFile, open: false, file: popout, name: "text"},
+		"textFile3":  File{texture: textFile, open: false, file: popout, name: "text"},
+		"imageFile1": File{texture: imageFile, open: false, file: cult, name: "cult"},
+		"imageFile2": File{texture: imageFile, open: false, file: goatHead, name: "goat"},
+		"imageFile3": File{texture: imageFile, open: false, file: calendar, name: "diary"},
 	}
 
 	for !rl.WindowShouldClose() {
@@ -277,15 +278,17 @@ func main() {
 					}
 
 				} else {
-					rl.DrawText("You have no new emails", 50, 50, 12, rl.White)
+					rl.DrawText("You have no new emails", 150, 50, 12, rl.White)
 				}
 
 			}
 
 			if file_explorer_popout == true {
-				rl.DrawTexture(popout, 400, 25, rl.White)
+				// rl.DrawTexture(popout, 400, 25, rl.White)
+				rl.DrawTexturePro(popout, rl.NewRectangle(0, 0, float32(popout.Width), float32(popout.Height)), rl.NewRectangle(380, 25, float32(popout.Width)*1.1, float32(popout.Height)), rl.NewVector2(0, 0), 0, rl.White)
 				populateFileExplorer(fileExplorerTextures, popout)
-				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(745, 35), 10) {
+				rl.DrawRectangle(int32(float32(popout.Width))+395, 35, 10, 10, rl.White)
+				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(395+float32(popout.Width), 35), 10) {
 					if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 						file_explorer_popout = false
 					}
@@ -393,16 +396,20 @@ func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Textur
 			rl.NewVector2(0, 0),
 			0,
 			rl.White)
+		var fileText = fileExplorerTextures[order[key]].name
+		var textSizing = rl.MeasureTextEx(rl.GetFontDefault(), fileText, 12, 1)
+
+		rl.DrawText(fileText, int32(x)+texture.Width/2, int32(y)+int32(textSizing.Y)*5, 12, rl.Orange)
 
 		if fileExplorerTextures[order[key]].open == true {
-			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file}
+			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name}
 		}
 
 		// rl.DrawCircle(int32(x), int32(y), float32(texture.Width), rl.White)
 		// rl.DrawRectangle(int32(x), int32(y), int32(texture.Width)*2, int32(texture.Height)*2, rl.White)
 		if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.Rectangle{x, y, float32(texture.Width * 2), float32(texture.Height * 2)}) {
 			if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-				fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file}
+				fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name}
 				// fileExplorerTextures[order[key]] = File{texture: texture, open: true}
 			}
 		}
