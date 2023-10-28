@@ -10,7 +10,7 @@ var prev = rl.KeyNull
 
 
 func getInput() bool {
-	key := rl.GetKeyPr`essed()
+	key := rl.GetKeyPressed()
 	if prev == int(key) {
 		return false
 	}
