@@ -27,6 +27,9 @@ var state string = "login"
 func main() {
 
 	rl.InitWindow(800, 450, "raylib [core] example - basic window")
+	rl.InitAudioDevice()
+	fxCarve := rl.LoadSound("assets/audio/carve_pumpkin.wav")
+	fxEmail:= rl.LoadSound("assets/audio/email.wav")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
 	var pumpkins = loadPumpkin()
@@ -61,6 +64,7 @@ func main() {
 					i++
 					if i < 10 {
 						fmt.Println(i)
+						rl.PlaySound(fxCarve)
 						particles = generateParticles(10, centraliseInX(25), 100)
 					}
 					if i == 9 {
@@ -74,9 +78,13 @@ func main() {
 		}
 		if state == "desktop" {
 			fmt.Print("desktop")
+			rl.PlaySound(fxEmail)
 		}
 		rl.EndDrawing()
 	}
+	rl.UnloadSound(fxCarve)
+	rl.UnloadSound(fxEmail)
+	rl.CloseAudioDevice()
 }
 
 func centraliseInX(size int) int32 {
