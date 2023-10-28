@@ -40,7 +40,7 @@ func main() {
 	rl.InitAudioDevice()
 	fxCarve := rl.LoadSound("assets/audio/carve_pumpkin.wav")
 	fxEmail := rl.LoadSound("assets/audio/email.wav")
-	fxRunning := rl.LoadMusicStream("assets/audio/running.ogg")
+	fxRunning := rl.LoadSound("assets/audio/running.ogg")
 	fxStartup := rl.LoadSound("assets/audio/startup.ogg")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
@@ -87,7 +87,6 @@ func main() {
 	}
 
 	var textureOrder = []string{"email", "file_explorer", "chrome"}
-	rl.PlayMusicStream(fxRunning)
 
 	var fileExplorerTextures = map[string]File{
 		"textFile1":  File{texture: textFile, open: false, file: popout},
@@ -100,6 +99,9 @@ func main() {
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
+		if !rl.IsSoundPlaying(fxRunning) {
+			rl.PlaySound(fxRunning)
+		}
 		if state == "login" {
 			var pumpkin rl.Texture2D = pumpkins[i-1] // = rl.LoadTexture("assets/pumpkins/pumpkin_stage_1.png")
 
