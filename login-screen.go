@@ -4,7 +4,7 @@ import rl "github.com/gen2brain/raylib-go/raylib"
 
 func loginScreen() {
 	var particles []rl.Rectangle
-
+	var i = 1
 	rl.InitWindow(800, 450, "raylib [core] example - basic window")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
@@ -31,7 +31,11 @@ func loginScreen() {
 
 		if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(xCentralRectangleCoordinate+45, float32(rl.GetScreenHeight()/4+50)), 50) {
 			if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-				particles = generateParticles(10, centraliseInX(25), 100)
+				if i < 7 {
+					i++
+					particles = generateParticles(10, centraliseInX(25), 100)
+					pumpkin = getPumpkin(i)
+				}
 
 			}
 		}
