@@ -289,7 +289,7 @@ func main() {
 				populateFileExplorer(fileExplorerTextures, popout)
 				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(745, 35), 10) {
 					if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-						file_explorer_popout = false
+						file_explorer_popout = !file_explorer_popout
 					}
 				}
 			}
