@@ -19,7 +19,9 @@ var (
 	PURPLE4 = rl.NewColor(123, 44, 191, 1)
 	PURPLE5 = rl.NewColor(157, 78, 221, 1)
 
-	CENTRAL = rl.GetScreenWidth() / 2
+	CENTRAL      = rl.GetScreenWidth() / 2
+	SCREENHEIGHT = rl.GetScreenHeight()
+	SCREENWIDTH  = rl.GetScreenWidth()
 )
 
 var state string = "login"
@@ -29,6 +31,10 @@ func main() {
 	rl.InitWindow(800, 450, "raylib [core] example - basic window")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
+
+	SCREENHEIGHT = rl.GetScreenHeight()
+	SCREENWIDTH = rl.GetScreenWidth()
+
 	var pumpkins = loadPumpkin()
 
 	var i = 1
@@ -73,15 +79,29 @@ func main() {
 			}
 		}
 		if state == "desktop" {
+			var desktopSingleMargin int32 = 25
+			var desktopDoubleMargin int32 = 50
 			var secretFile rl.Texture2D = rl.LoadTexture("assets/lock.png")
 
 			rl.ClearBackground(PURPLE3)
 
-			rl.DrawRectangle(25, 25, int32(rl.GetScreenWidth())-50, int32(rl.GetScreenHeight())-50, rl.Purple)
+			rl.DrawRectangle(desktopSingleMargin, desktopSingleMargin, int32(SCREENWIDTH)-desktopDoubleMargin, int32(SCREENHEIGHT)-desktopDoubleMargin, rl.Purple)
 			drawTaskbar()
 
-			rl.DrawTexturePro(secretFile, rl.NewRectangle(0, 0, float32(secretFile.Width), float32(secretFile.Height)), rl.NewRectangle(float32(centraliseInX(int(secretFile.Width*3))+25), float32(centraliseInY(int(secretFile.Height*3))), float32(secretFile.Width)*3, float32(secretFile.Height)*3), rl.NewVector2(0, 0), 0, rl.White)
-			rl.DrawText("click me", centraliseInX(len("click me")*3), centraliseInY(1)+50, 12, rl.Orange)
+			var baseSecretFileSize = rl.NewRectangle(0, 0, float32(secretFile.Width), float32(secretFile.Height))
+			var newWidth = float32(secretFile.Width) * 2
+			var newHeight = float32(secretFile.Height) * 2
+			var largeSecretFileSize = rl.NewRectangle(float32(desktopSingleMargin)+5, float32(desktopSingleMargin)+5, newWidth, newHeight)
+
+			rl.DrawTexturePro(secretFile, baseSecretFileSize, largeSecretFileSize, rl.NewVector2(0, 0), 0, rl.White)
+
+			var fileText = "click me"
+			// var fileTextWidth = rl.MeasureText(fileText, 12)
+			//var arr = rl.MeasureTextEx(rl.GetFontDefault(), fileText, 12, 1)
+			//var fileTextWidth = arr.X
+			//var fileTextHeight = arr.Y
+
+			rl.DrawText(fileText, desktopSingleMargin+7, desktopSingleMargin+int32(newHeight)+5, 12, rl.Orange)
 
 		}
 		rl.EndDrawing()
