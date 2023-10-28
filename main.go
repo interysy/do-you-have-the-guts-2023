@@ -358,7 +358,6 @@ func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Textur
 
 func openPopUpFileExpolorer(popout rl.Texture2D, image rl.Texture2D, x int, y int, textures map[string]File, key string) bool {
 	rl.DrawTexture(image, int32(x)+10, int32(y)+10, rl.White)
-	rl.DrawRectangle(int32(x)+int32(image.Width)-5, int32(y)+10, 20, 20, rl.White)
 	if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(float32(x)+float32(image.Width)-5, float32(y)+10), 20) {
 		if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 			return false
