@@ -141,10 +141,20 @@ func main() {
 
 			if email_popout == true {
 				rl.DrawTexture(popout, 25, 25, rl.White)
+				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(365, 35), 10) {
+					if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+						email_popout = false
+					}
+				}
 			}
 
 			if file_explorer_popout == true {
 				rl.DrawTexture(popout, 400, 25, rl.White)
+				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(745, 35), 10) {
+					if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+						file_explorer_popout = false
+					}
+				}
 			}
 
 			//Collision check on email icon
