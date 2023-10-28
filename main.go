@@ -28,6 +28,12 @@ var state string = "login"
 var password bool = false
 var authenticated bool = false
 
+type File struct {
+	texture rl.Texture2D
+	open    bool
+	file    rl.Texture2D
+}
+
 func main() {
 
 	rl.InitWindow(800, 450, "Gamer OS")
@@ -53,6 +59,9 @@ func main() {
 	var popout rl.Texture2D = rl.LoadTexture("assets/popout.png")
 	var textFile = rl.LoadTexture("assets/txt_file.png")
 	var imageFile = rl.LoadTexture("assets/image.png")
+	var cult = rl.LoadTexture("assets/cult.png")
+	var goatHead = rl.LoadTexture("assets/goathead.png")
+	var calendar = rl.LoadTexture("assets/calendar.png")
 	var desktop_frame = rl.LoadTexture("assets/desktop_frame.png")
 
 	var i = 1
@@ -62,10 +71,7 @@ func main() {
 	var windowWidth = rl.GetScreenWidth()
 
 	var email_popout = false
-	var real_email_popout1 = false
-	var real_email_popout2 = false
-	var real_email_popout3 = false
-	var real_email_popout4 = false
+	var real_email_popout = false
 
 	var file_explorer_popout = false
 
@@ -80,30 +86,26 @@ func main() {
 	var textureOrder = []string{"email", "file_explorer", "chrome"}
 	rl.PlayMusicStream(fxRunning)
 
-	var fileExplorerTextures = map[string]rl.Texture2D{
-		"textFile1":  textFile,
-		"textFile2":  textFile,
-		"textFile3":  textFile,
-		"imageFile1": imageFile,
-		"imageFile2": imageFile,
-		"imageFile3": imageFile,
+	var fileExplorerTextures = map[string]File{
+		"textFile1":  File{texture: textFile, open: false, file: popout},
+		"textFile2":  File{texture: textFile, open: false, file: popout},
+		"textFile3":  File{texture: textFile, open: false, file: popout},
+		"imageFile1": File{texture: imageFile, open: false, file: cult},
+		"imageFile2": File{texture: imageFile, open: false, file: goatHead},
+		"imageFile3": File{texture: imageFile, open: false, file: calendar},
 	}
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		if state == "login" {
-			//loginScreen()
-			var pumpkin rl.Texture2D = pumpkins[i-1] // = rl.LoadTexture("assets/pumpkins/pumpkin_stage_1.png")
+			var pumpkin rl.Texture2D = pumpkins[i-1]
 
 			rl.ClearBackground(PURPLE1)
 
 			xCentralRectangleCoordinate := float32(centraliseInX(90))
-			//var iconRectangle = rl.NewRectangle(xCentralRectangleCoordinate, float32(rl.GetScreenHeight())/4+7, 90, 90)
 
-			// DrawBorderedRectangle(iconRectangle, 5, PURPLE1, rl.White)
 			rl.DrawCircle(int32(xCentralRectangleCoordinate+45), int32(rl.GetScreenHeight()/4+50), 50, rl.DarkPurple)
 
-			//rl.DrawTexturePro(texture, rl.NewRectangle(0, 0, float32(texture.Width), float32(texture.Height)), rl.NewRectangle(posX, posY, width*scaleX, height*scaleY), rl.NewVector2(0, 0), 0, tint)
 			rl.DrawTexture(pumpkin, centraliseInX(int(pumpkin.Width)), int32(rl.GetScreenHeight()/4)+5, rl.White)
 
 			loginUserName := "common jp morgan enjoyer"
@@ -165,8 +167,6 @@ func main() {
 				rectX := centraliseInX(300)
 				rectY := centraliseInY(100)
 
-				//TODO: use fergus' art to draw a rectangle with a border
-				//TODO: Fix this so that the text is centralised properly
 				rl.DrawRectangle(rectX, rectY, 300, 100, rl.Orange)
 
 				rl.DrawText("Enter Password", centraliseInX(int(rl.MeasureText("Enter Password", 12)))-10, centraliseInY(100)+105, 16, rl.White)
@@ -191,12 +191,12 @@ func main() {
 
 				//add 4 boxed emails here
 				if textures["email"] == mail_notif {
-					//email 1
+					//add 4 boxes as wide as the popout with "email 1" text inside the box
 					rl.DrawRectangle(150, 50, 300, 48, rl.DarkPurple)
 					rl.DrawRectangle(150, 100, 300, 48, rl.DarkPurple)
 					rl.DrawRectangle(150, 150, 300, 48, rl.DarkPurple)
 					rl.DrawRectangle(150, 200, 300, 48, rl.DarkPurple)
-
+          
 					//titles
 					rl.DrawText("Pete (BLOCKED)", 155, 52, 16, rl.White)
 					rl.DrawText("The Lottery Co.", 155, 102, 16, rl.White)
@@ -239,46 +239,22 @@ func main() {
 							}
 						}
 					}
-					if real_email_popout4 == true {
-						rl.DrawTexture(popout, 330, 55, rl.White)
-						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(670, 75), 10) {
-							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-								real_email_popout4 = false
-							}
-						}
-					}
-
-					//collision check on email 1,2,3,4
+					//collision check on email 1
 					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 50, 300, 48)) {
 						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout1 = true
-						}
-					}
-					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(160, 100, 300, 48)) {
-						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout2 = true
-						}
-					}
-					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(170, 150, 300, 48)) {
-						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout3 = true
-						}
-					}
-					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(180, 200, 300, 48)) {
-						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout4 = true
+							real_email_popout = true
 						}
 					}
 
 				} else {
-					rl.DrawText("You have no new emails", 150, 50, 12, rl.White)
+					rl.DrawText("You have no new emails", 50, 50, 12, rl.White)
 				}
 
 			}
 
 			if file_explorer_popout == true {
 				rl.DrawTexture(popout, 400, 25, rl.White)
-				populateFileExplorer(fileExplorerTextures)
+				populateFileExplorer(fileExplorerTextures, popout)
 				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(745, 35), 10) {
 					if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 						file_explorer_popout = false
@@ -318,16 +294,11 @@ func centraliseInY(size int) int32 {
 }
 
 func DrawBorderedRectangle(rect rl.Rectangle, borderWidth float32, fillColor rl.Color, borderColor rl.Color) {
-	// Draw filled inner rectangle
 	rl.DrawRectangleRec(rect, fillColor)
 
-	// Draw top border
 	rl.DrawRectangle(int32(rect.X), int32(rect.Y), int32(rect.Width), int32(borderWidth), borderColor)
-	// Draw bottom border
 	rl.DrawRectangle(int32(rect.X), int32(rect.Y+rect.Height-borderWidth), int32(rect.Width), int32(borderWidth), borderColor)
-	// Draw left border
 	rl.DrawRectangle(int32(rect.X), int32(rect.Y), int32(borderWidth), int32(rect.Height), borderColor)
-	// Draw right border
 	rl.DrawRectangle(int32(rect.X+rect.Width-borderWidth), int32(rect.Y), int32(borderWidth), int32(rect.Height), borderColor)
 }
 
@@ -340,14 +311,10 @@ func loadPumpkin() []rl.Texture2D {
 }
 
 func drawTaskbar(textures map[string]rl.Texture2D, textureOrder []string) {
-	//rl.DrawTexturePro(hambuga, rl.NewRectangle(0, 0, float32(hambuga.Width), float32(hambuga.Height)), rl.NewRectangle(25, float32(windowHeight)-60, float32(hambuga.Width)*1.5, float32(hambuga.Height)*1.5), rl.NewVector2(0, 0), 0, rl.White)
-	//rl.DrawTexturePro(chrome, rl.NewRectangle(0, 0, float32(chrome.Width), float32(chrome.Height)), rl.NewRectangle(25+float32(chrome.Width)*1.5, float32(windowHeight)-60, float32(hambuga.Width)*1.5, float32(hambuga.Height)*1.5), rl.NewVector2(0, 0), 0, rl.White)
 	// for each key in the map, draw the texture
 	var windowHeight = rl.GetScreenHeight()
-	//var windowWidth = rl.GetScreenWidth()
 
 	var totalIconWidth = 0
-	//sort.Strings(textures)
 	for key := range textureOrder {
 		var texture = textures[textureOrder[key]]
 		rl.DrawTexturePro(texture, //texture
@@ -364,35 +331,48 @@ func drawTaskbar(textures map[string]rl.Texture2D, textureOrder []string) {
 	}
 }
 
-func populateFileExplorer(fileExplorerTextures map[string]rl.Texture2D) {
+func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Texture2D) {
 
 	var order = []string{"textFile1", "textFile2", "textFile3", "imageFile1", "imageFile2", "imageFile3"}
 	var i float32 = 0
-	var g bool = false
 	var nextLineY = 0
 	for key := range order {
-		//fmt.Println(string(key) + "\n")
-		var texture = fileExplorerTextures[order[key]]
-		if g {
-			nextLineY = int(texture.Height*2 + 10)
-		} else {
-			nextLineY = 0
-		}
+		var texture = fileExplorerTextures[order[key]].texture
+
+		var x = float32(400) + float32(texture.Width) + ((float32(texture.Width)*2 + 10) * i)
+		var y = float32(25) + float32(texture.Height) + float32(nextLineY)
 
 		rl.DrawTexturePro(texture, //texture
 			rl.NewRectangle(0, 0, float32(texture.Width), float32(texture.Height)),
 			rl.NewRectangle(
-				float32(400)+float32(texture.Width)+((float32(texture.Width)*2+10)*i), //x
-				float32(25)+float32(texture.Height)+float32(nextLineY),                //y
+				x,                          //x
+				y,                          //y
 				float32(texture.Width)*2,   //width
 				float32(texture.Height)*2), //height
 			rl.NewVector2(0, 0),
 			0,
 			rl.White)
-		if g {
-			i++
+
+		if fileExplorerTextures[order[key]].open == true {
+			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file}
 		}
-		g = !g
+
+		if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.Rectangle{x, y, float32(texture.Width * 2), float32(texture.Height * 2)}) {
+			if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+				fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file}
+			}
+		}
+		i++
 	}
 
+}
+
+func openPopUpFileExpolorer(popout rl.Texture2D, image rl.Texture2D, x int, y int, textures map[string]File, key string) bool {
+	rl.DrawTexture(image, int32(x)+10, int32(y)+10, rl.White)
+	if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(float32(x)+float32(image.Width)-5, float32(y)+10), 20) {
+		if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+			return false
+		}
+	}
+	return true
 }
