@@ -1,6 +1,9 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+	"math/rand"
+)
 
 var (
 	ORANGE1 = rl.NewColor(255, 109, 0, 1)
@@ -40,4 +43,41 @@ func centraliseInX(size int) int32 {
 	var centralXCoordinate = rl.GetScreenWidth()/2 - size/2
 
 	return int32(centralXCoordinate)
+}
+
+type Particle struct {
+	x int32 
+	y int32
+}
+
+
+func generateParticles(num_particles int, x int32, y int32) []Particle {
+	var deviation int32 = 10
+	var particles []Particle
+
+	for i := 0; i < num_particles; i++ {
+		particles = append(particles, Particle{x+rand.Int31n(deviation), y+rand.Int31n(deviation)})
+	}
+
+	return particles
+}
+
+func updateParticles(particles []Particle) []Partices {
+	var gravity int32 = 10
+
+	for _, particle := range particles {
+		particle.x += rand.Int31n(deviation)
+		particle.y += gravity // might need to be -
+	}
+  
+	return particles
+}
+
+func renderParticles(particles []Particle) {
+	var colour = rl.Gray
+
+	//TODO Add random to colour
+	for _, particle := range particles {
+		rl.DrawRectangle()
+	}
 }
