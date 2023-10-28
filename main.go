@@ -146,7 +146,7 @@ func main() {
 				//TODO: Fix this so that the text is centralised properly
 				rl.DrawRectangle(rectX, rectY, 300, 100, rl.Orange)
 
-				rl.DrawText("Enter Password", centraliseInX(int(rl.MeasureText("Enter Password", 12))), centraliseInY(100)+100, 16, rl.White)
+				rl.DrawText("Enter Password", centraliseInX(int(rl.MeasureText("Enter Password", 12)))-10, centraliseInY(100)+105, 16, rl.White)
 				for i := 0; i < len(input); i++ {
 					rl.DrawCircle(rectX+int32(i*(300/4))+25, rectY+50, 25, rl.White)
 				}
