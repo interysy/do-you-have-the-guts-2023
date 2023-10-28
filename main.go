@@ -36,9 +36,16 @@ func main() {
 	SCREENWIDTH = rl.GetScreenWidth()
 
 	var pumpkins = loadPumpkin()
+	var secretFile rl.Texture2D = rl.LoadTexture("assets/lock.png")
+
+	var chrome rl.Texture2D = rl.LoadTexture("assets/chrome.png")
+	var hambuga rl.Texture2D = rl.LoadTexture("assets/hambuga.png")
 
 	var i = 1
 	var particles []rl.Rectangle
+
+	var windowHeight = rl.GetScreenHeight()
+	var windowWidth = rl.GetScreenWidth()
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
@@ -86,7 +93,9 @@ func main() {
 			rl.ClearBackground(PURPLE3)
 
 			rl.DrawRectangle(desktopSingleMargin, desktopSingleMargin, int32(SCREENWIDTH)-desktopDoubleMargin, int32(SCREENHEIGHT)-desktopDoubleMargin, rl.Purple)
-			drawTaskbar()
+			rl.DrawRectangle(25, int32(windowHeight)-60, int32(windowWidth)-50, 40, rl.DarkPurple)
+			rl.DrawTexturePro(hambuga, rl.NewRectangle(0, 0, float32(hambuga.Width), float32(hambuga.Height)), rl.NewRectangle(25, float32(windowHeight)-60, float32(hambuga.Width)*1.5, float32(hambuga.Height)*1.5), rl.NewVector2(0, 0), 0, rl.White)
+			rl.DrawTexturePro(chrome, rl.NewRectangle(0, 0, float32(chrome.Width), float32(chrome.Height)), rl.NewRectangle(25+float32(chrome.Width)*1.5, float32(windowHeight)-60, float32(hambuga.Width)*1.5, float32(hambuga.Height)*1.5), rl.NewVector2(0, 0), 0, rl.White)
 
 			var baseSecretFileSize = rl.NewRectangle(0, 0, float32(secretFile.Width), float32(secretFile.Height))
 			var newWidth = float32(secretFile.Width) * 2
@@ -140,16 +149,3 @@ func loadPumpkin() []rl.Texture2D {
 	return pumpkin
 }
 
-func drawTaskbar() {
-
-	var chrome rl.Texture2D = rl.LoadTexture("assets/chrome.png")
-	var hambuga rl.Texture2D = rl.LoadTexture("assets/hambuga.png")
-
-	var windowHeight = rl.GetScreenHeight()
-	var windowWidth = rl.GetScreenWidth()
-
-	rl.DrawRectangle(25, int32(windowHeight)-60, int32(windowWidth)-50, 40, rl.DarkPurple)
-	rl.DrawTexturePro(hambuga, rl.NewRectangle(0, 0, float32(hambuga.Width), float32(hambuga.Height)), rl.NewRectangle(25, float32(windowHeight)-60, float32(hambuga.Width)*1.5, float32(hambuga.Height)*1.5), rl.NewVector2(0, 0), 0, rl.White)
-	rl.DrawTexturePro(chrome, rl.NewRectangle(0, 0, float32(chrome.Width), float32(chrome.Height)), rl.NewRectangle(25+float32(chrome.Width)*1.5, float32(windowHeight)-60, float32(hambuga.Width)*1.5, float32(hambuga.Height)*1.5), rl.NewVector2(0, 0), 0, rl.White)
-
-}
