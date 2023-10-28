@@ -13,6 +13,10 @@ func getInput() bool {
 	if prev == int(key) {
 		return false
 	}
+
+	if len(input) == 4 && key != rl.KeyBackspace || len(input) == 0 && key == rl.KeyBackspace {
+		return false
+	}
 	switch key {
 	case rl.KeyZero:
 		input += "0"
@@ -44,15 +48,15 @@ func getInput() bool {
 	case rl.KeyNine:
 		input += "9"
 		break
+	case rl.KeyBackspace:
+		input = input[:len(input)-1]
+		break
 	}
-	//fmt.Print(string(key) + "\n")
+
 	prev = int(key)
-	if len(input) == 4 {
+	if len(input) >= 4 {
 		if passwordString == input {
-			input = ""
 			return true
-		} else {
-			input = ""
 		}
 		return false
 	}
