@@ -88,7 +88,6 @@ func main() {
 		if state == "desktop" {
 			var desktopSingleMargin int32 = 25
 			var desktopDoubleMargin int32 = 50
-			var secretFile rl.Texture2D = rl.LoadTexture("assets/lock.png")
 
 			rl.ClearBackground(PURPLE3)
 
@@ -148,4 +147,3 @@ func loadPumpkin() []rl.Texture2D {
 	}
 	return pumpkin
 }
-
