@@ -93,8 +93,6 @@ func main() {
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		if state == "login" {
-			//loginScreen()
-			getInput()
 			var pumpkin rl.Texture2D = pumpkins[i-1] // = rl.LoadTexture("assets/pumpkins/pumpkin_stage_1.png")
 
 			rl.ClearBackground(PURPLE1)
@@ -167,8 +165,6 @@ func main() {
 				rectX := centraliseInX(300)
 				rectY := centraliseInY(100)
 
-				//TODO: use fergus' art to draw a rectangle with a border
-				//TODO: Fix this so that the text is centralised properly
 				rl.DrawRectangle(rectX, rectY, 300, 100, rl.Orange)
 
 				rl.DrawText("Enter Password", centraliseInX(int(rl.MeasureText("Enter Password", 12)))-10, centraliseInY(100)+105, 16, rl.White)

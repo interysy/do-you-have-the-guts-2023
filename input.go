@@ -8,8 +8,9 @@ var passwordString = "1234"
 var input = ""
 var prev = rl.KeyNull
 
+
 func getInput() bool {
-	key := rl.GetKeyPressed()
+	key := rl.GetKeyPr`essed()
 	if prev == int(key) {
 		return false
 	}
