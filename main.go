@@ -27,12 +27,14 @@ var (
 var state string = "login"
 var password bool = false
 var authenticated bool = false
+var lockFilePassword string
 
 type File struct {
 	texture rl.Texture2D
 	open    bool
 	file    rl.Texture2D
 	name    string
+	locked  bool
 }
 
 func main() {
@@ -95,7 +97,7 @@ func main() {
 		"textFile2":  File{texture: textFile, open: false, file: popout, name: "text"},
 		"textFile3":  File{texture: textFile, open: false, file: popout, name: "text"},
 		"imageFile1": File{texture: imageFile, open: false, file: cult, name: "cult"},
-		"imageFile2": File{texture: imageFile, open: false, file: goatHead, name: "goat"},
+		"imageFile2": File{texture: imageFile, open: false, file: goatHead, name: "goat", locked: true},
 		"imageFile3": File{texture: imageFile, open: false, file: calendar, name: "diary"},
 	}
 
@@ -401,15 +403,16 @@ func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Textur
 
 		rl.DrawText(fileText, int32(x)+texture.Width/2, int32(y)+int32(textSizing.Y)*5, 12, rl.Orange)
 
-		if fileExplorerTextures[order[key]].open == true {
-			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name}
+		if fileExplorerTextures[order[key]].open == true && fileExplorerTextures[order[key]].locked == false {
+			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: fileExplorerTextures[order[key]].locked}
 		}
+		// need condition for file being unlocked
 
 		// rl.DrawCircle(int32(x), int32(y), float32(texture.Width), rl.White)
 		// rl.DrawRectangle(int32(x), int32(y), int32(texture.Width)*2, int32(texture.Height)*2, rl.White)
 		if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.Rectangle{x, y, float32(texture.Width * 2), float32(texture.Height * 2)}) {
 			if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-				fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name}
+				fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: fileExplorerTextures[order[key]].locked}
 				// fileExplorerTextures[order[key]] = File{texture: texture, open: true}
 			}
 		}
@@ -423,11 +426,34 @@ func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Textur
 }
 
 func openPopUpFileExpolorer(popout rl.Texture2D, image rl.Texture2D, x int, y int, textures map[string]File, key string) bool {
-	rl.DrawTexture(image, int32(x)+10, int32(y)+10, rl.White)
-	if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(float32(x)+float32(image.Width)-5, float32(y)+10), 20) {
-		if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-			return false
+	var currentTexture = textures[key]
+	if currentTexture.locked == true {
+		unlockFile()
+	} else {
+		rl.DrawTexture(image, int32(x)+10, int32(y)+10, rl.White)
+		if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(float32(x)+float32(image.Width)-5, float32(y)+10), 20) {
+			if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+				return false
+			}
 		}
+		return true
 	}
-	return true
+	return false
+}
+
+func unlockFile() {
+	var rectX int32 = 400
+	var rectY int32 = 200
+
+	rl.DrawText("Enter Password", centraliseInX(int(rl.MeasureText("Enter Password", 12)))-10, centraliseInY(100)+105, 16, rl.White)
+	for i := 0; i < len(fileInput); i++ {
+		rl.DrawCircle(rectX+int32(i*(300/4))+25, rectY+50, 25, rl.White)
+	}
+	if fileGetInput() {
+		for i := 0; i < len(fileInput); i++ {
+			rl.DrawCircle(rectX+int32(i*(300/4))+25, rectY+50, 25, rl.Black)
+		}
+		// rl.PlaySound(fxEmail)
+		authenticated = true
+	}
 }
