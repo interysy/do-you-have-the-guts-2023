@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strconv"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -31,8 +33,7 @@ func loginScreen() {
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
 
-	var texture rl.Texture2D = rl.LoadTexture("assets/pumpkin_stage_1.png")
-
+	var pumpkin rl.Texture2D = rl.LoadTexture("assets/pumpkins/pumpkin_stage_1.png")
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 
@@ -45,7 +46,7 @@ func loginScreen() {
 		rl.DrawCircle(int32(xCentralRectangleCoordinate+45), int32(rl.GetScreenHeight()/4+50), 50, rl.DarkPurple)
 
 		//rl.DrawTexturePro(texture, rl.NewRectangle(0, 0, float32(texture.Width), float32(texture.Height)), rl.NewRectangle(posX, posY, width*scaleX, height*scaleY), rl.NewVector2(0, 0), 0, tint)
-		rl.DrawTexture(texture, centraliseInX(int(texture.Width)), int32(rl.GetScreenHeight()/4)+5, rl.White)
+		rl.DrawTexture(pumpkin, centraliseInX(int(pumpkin.Width)), int32(rl.GetScreenHeight()/4)+5, rl.White)
 
 		loginUserName := "common jp morgan enjoyer"
 		rl.DrawText(loginUserName, centraliseInX(len(loginUserName)*7), 250, 15, rl.Orange)
@@ -82,4 +83,11 @@ func DrawBorderedRectangle(rect rl.Rectangle, borderWidth float32, fillColor rl.
 	rl.DrawRectangle(int32(rect.X), int32(rect.Y), int32(borderWidth), int32(rect.Height), borderColor)
 	// Draw right border
 	rl.DrawRectangle(int32(rect.X+rect.Width-borderWidth), int32(rect.Y), int32(borderWidth), int32(rect.Height), borderColor)
+}
+
+func getPumpkin(pumpkinOrder int) rl.Texture2D {
+
+	var pumpkin = rl.LoadTexture("assets/pumpkins/pumpkin_stage_" + strconv.Itoa(pumpkinOrder) + ".png")
+
+	return pumpkin
 }
