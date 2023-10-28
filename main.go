@@ -59,7 +59,10 @@ func main() {
 	var windowWidth = rl.GetScreenWidth()
 
 	var email_popout = false
-	var real_email_popout = false
+	var real_email_popout1 = false
+	var real_email_popout2 = false
+	var real_email_popout3 = false
+	var real_email_popout4 = false
 
 	var file_explorer_popout = false
 
@@ -183,33 +186,82 @@ func main() {
 
 				//add 4 boxed emails here
 				if textures["email"] == mail_notif {
-					//add 4 boxes as wide as the popout with "email 1" text inside the box
+					//email 1
 					rl.DrawRectangle(150, 50, 300, 48, rl.DarkPurple)
 					rl.DrawRectangle(150, 100, 300, 48, rl.DarkPurple)
 					rl.DrawRectangle(150, 150, 300, 48, rl.DarkPurple)
 					rl.DrawRectangle(150, 200, 300, 48, rl.DarkPurple)
+					
+					
+					//titles
 					rl.DrawText("Email 1", 150, 50, 16, rl.White)
 					rl.DrawText("Email 2", 150, 100, 16, rl.White)
 					rl.DrawText("Email 3", 150, 150, 16, rl.White)
 					rl.DrawText("Email 4", 150, 200, 16, rl.White)
+					
+					//subtitles
+					rl.DrawText("Subject: You have won a free car", 150, 65, 12, rl.White)
+					rl.DrawText("Subject: You have won a free car", 150, 115, 12, rl.White)
+					rl.DrawText("Subject: You have won a free car", 150, 165, 12, rl.White)
+					rl.DrawText("Subject: You have won a free car", 150, 215, 12, rl.White)
 
-					if real_email_popout == true {
+					if real_email_popout1 == true {
 						rl.DrawTexture(popout, 300, 25, rl.White)
 						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(640, 35), 10) {
 							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-								real_email_popout = false
+								real_email_popout1 = false
 							}
 						}
 					}
-					//collision check on email 1
+					if real_email_popout2 == true {
+						rl.DrawTexture(popout, 310, 35, rl.White)
+						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(650, 45), 10) {
+							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+								real_email_popout2 = false
+							}
+						}
+					}
+					if real_email_popout3 == true {
+						rl.DrawTexture(popout, 320, 45, rl.White)
+						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(660, 65), 10) {
+							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+								real_email_popout3 = false
+							}
+						}
+					}
+					if real_email_popout4 == true {
+						rl.DrawTexture(popout, 330, 55, rl.White)
+						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(670, 75), 10) {
+							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+								real_email_popout4 = false
+							}
+						}
+					}
+
+					//collision check on email 1,2,3,4
 					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 50, 300, 48)) {
 						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout = true
+							real_email_popout1 = true
+						}
+					}
+					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(160, 100, 300, 48)) {
+						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+							real_email_popout2 = true
+						}
+					}
+					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(170, 150, 300, 48)) {
+						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+							real_email_popout3 = true
+						}
+					}
+					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(180, 200, 300, 48)) {
+						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+							real_email_popout4 = true
 						}
 					}
 
 				} else {
-					rl.DrawText("You have no new emails", 50, 50, 12, rl.White)
+					rl.DrawText("You have no new emails", 150, 50, 12, rl.White)
 				}
 
 			}
