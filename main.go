@@ -42,7 +42,6 @@ func main() {
 	fxEmail := rl.LoadSound("assets/audio/email.wav")
 	fxRunning := rl.LoadMusicStream("assets/audio/running.ogg")
 	fxStartup := rl.LoadSound("assets/audio/startup.ogg")
-	fxScream  := rl.LoadSound("assets/audio/scream.ogg")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
 
@@ -72,7 +71,10 @@ func main() {
 	var windowWidth = rl.GetScreenWidth()
 
 	var email_popout = false
-	var real_email_popout = false
+	var real_email_popout1 = false
+	var real_email_popout2 = false
+	var real_email_popout3 = false
+	var real_email_popout4 = false
 
 	var file_explorer_popout = false
 
@@ -200,23 +202,77 @@ func main() {
 					rl.DrawRectangle(150, 100, 300, 48, rl.DarkPurple)
 					rl.DrawRectangle(150, 150, 300, 48, rl.DarkPurple)
 					rl.DrawRectangle(150, 200, 300, 48, rl.DarkPurple)
-					rl.DrawText("Email 1", 150, 50, 16, rl.White)
-					rl.DrawText("Email 2", 150, 100, 16, rl.White)
-					rl.DrawText("Email 3", 150, 150, 16, rl.White)
-					rl.DrawText("Email 4", 150, 200, 16, rl.White)
 
-					if real_email_popout == true {
+					//titles
+					rl.DrawText("Pete (BLOCKED)", 155, 52, 16, rl.White)
+					rl.DrawText("The Lottery Co.", 155, 102, 16, rl.White)
+					rl.DrawText("Lukas", 155, 152, 16, rl.White)
+					rl.DrawText("Email 4", 155, 202, 16, rl.White)
+
+					//subtitles
+					rl.DrawText("Subject: Please listen to me...", 155, 65, 12, rl.White)
+					rl.DrawText("Subject: You have won a free car", 155, 115, 12, rl.White)
+					rl.DrawText("Subject: Soon...", 155, 165, 12, rl.White)
+					rl.DrawText("Subject: You have won a free car", 155, 215, 12, rl.White)
+
+					if real_email_popout1 == true {
 						rl.DrawTexture(popout, 300, 25, rl.White)
+						//add text inside drawing
+
+						rl.DrawText("From: Pete (BLOCKED)\tDate: 15/08\nDude,\nI really don't think you should be getting involved \nwith these guys, I had a look at the stuff you sent me \nearlier today and it sounds really... weird.\nPlease respond, we gotta talk.", 315, 35, 12, rl.White)
+
 						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(640, 35), 10) {
 							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-								real_email_popout = false
+								real_email_popout1 = false
 							}
 						}
 					}
-					//collision check on email 1
+					if real_email_popout2 == true {
+						rl.DrawTexture(popout, 310, 35, rl.White)
+						rl.DrawText("From: The Lottery Co.\t16/08\nYOU WON A FREE CAR!!!!\nCALL US NOW ON +44 (0)7314982430 TO\nCLAIM YOUR FREE 2001 HONDA CIVIC!!!!", 325, 45, 12, rl.White)
+						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(650, 45), 10) {
+							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+								real_email_popout2 = false
+							}
+						}
+					}
+					if real_email_popout3 == true {
+						rl.DrawTexture(popout, 320, 45, rl.White)
+						rl.DrawText("From: Lukas (SB)\t30/10\nGood evening,\nfirst:\nthe Festival will be fulfilled In the Very next Evening.\nEach Individual shall Get all He can Think of.\nthe brotherhood looks forward to seeing you,\nLukas", 335, 55, 12, rl.White)
+						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(660, 65), 10) {
+							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+								real_email_popout3 = false
+							}
+						}
+					}
+					if real_email_popout4 == true {
+						rl.DrawTexture(popout, 330, 55, rl.White)
+						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(670, 75), 10) {
+							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+								real_email_popout4 = false
+							}
+						}
+					}
+
+					//collision check on email 1,2,3,4
 					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 50, 300, 48)) {
 						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout = true
+							real_email_popout1 = true
+						}
+					}
+					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 100, 300, 48)) {
+						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+							real_email_popout2 = true
+						}
+					}
+					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 150, 300, 48)) {
+						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+							real_email_popout3 = true
+						}
+					}
+					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 200, 300, 48)) {
+						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+							real_email_popout4 = true
 						}
 					}
 
