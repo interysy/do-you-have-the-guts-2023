@@ -28,7 +28,7 @@ var state string = "login"
 
 func main() {
 
-	rl.InitWindow(800, 450, "raylib [core] example - basic window")
+	rl.InitWindow(800, 450, "Gamer OS")
 	rl.InitAudioDevice()
 	fxCarve := rl.LoadSound("assets/audio/carve_pumpkin.wav")
 	fxEmail := rl.LoadSound("assets/audio/email.wav")
@@ -43,6 +43,8 @@ func main() {
 
 	var chrome rl.Texture2D = rl.LoadTexture("assets/chrome.png")
 	var hambuga rl.Texture2D = rl.LoadTexture("assets/hambuga.png")
+	var mail rl.Texture2D = rl.LoadTexture("assets/mail.png")
+	var mail_notif rl.Texture2D = rl.LoadTexture("assets/mail_notif.png")
 
 	var i = 1
 	var particles []rl.Rectangle
@@ -50,6 +52,15 @@ func main() {
 	var windowHeight = rl.GetScreenHeight()
 	var windowWidth = rl.GetScreenWidth()
 
+	//object containing name of texture and texture location
+
+	var textures = map[string]rl.Texture2D{
+		"chrome":  chrome,
+		"hambuga": hambuga,
+		"email":   mail,
+	}
+
+	var textureOrder = []string{"hambuga", "chrome", "email"}
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		if state == "login" {
@@ -97,8 +108,9 @@ func main() {
 
 			rl.DrawRectangle(desktopSingleMargin, desktopSingleMargin, int32(SCREENWIDTH)-desktopDoubleMargin, int32(SCREENHEIGHT)-desktopDoubleMargin, rl.Purple)
 			rl.DrawRectangle(25, int32(windowHeight)-60, int32(windowWidth)-50, 40, rl.DarkPurple)
-			rl.DrawTexturePro(hambuga, rl.NewRectangle(0, 0, float32(hambuga.Width), float32(hambuga.Height)), rl.NewRectangle(25, float32(windowHeight)-60, float32(hambuga.Width)*1.5, float32(hambuga.Height)*1.5), rl.NewVector2(0, 0), 0, rl.White)
-			rl.DrawTexturePro(chrome, rl.NewRectangle(0, 0, float32(chrome.Width), float32(chrome.Height)), rl.NewRectangle(25+float32(chrome.Width)*1.5, float32(windowHeight)-60, float32(hambuga.Width)*1.5, float32(hambuga.Height)*1.5), rl.NewVector2(0, 0), 0, rl.White)
+			//call draw function that passes in the map
+
+			drawTaskbar(textures, textureOrder)
 
 			var baseSecretFileSize = rl.NewRectangle(0, 0, float32(secretFile.Width), float32(secretFile.Height))
 			var newWidth = float32(secretFile.Width) * 2
@@ -108,6 +120,13 @@ func main() {
 			rl.DrawTexturePro(secretFile, baseSecretFileSize, largeSecretFileSize, rl.NewVector2(0, 0), 0, rl.White)
 
 			var fileText = "click me"
+			// collision check on secret file
+			if rl.CheckCollisionPointRec(rl.GetMousePosition(), largeSecretFileSize) {
+				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+					rl.PlaySound(fxEmail)
+					textures["email"] = mail_notif
+				}
+			}
 			// var fileTextWidth = rl.MeasureText(fileText, 12)
 			//var arr = rl.MeasureTextEx(rl.GetFontDefault(), fileText, 12, 1)
 			//var fileTextWidth = arr.X
@@ -153,4 +172,29 @@ func loadPumpkin() []rl.Texture2D {
 		pumpkin = append(pumpkin, rl.LoadTexture("assets/pumpkins/pumpkin_stage_"+strconv.Itoa(i)+".png"))
 	}
 	return pumpkin
+}
+
+func drawTaskbar(textures map[string]rl.Texture2D, textureOrder []string) {
+	//rl.DrawTexturePro(hambuga, rl.NewRectangle(0, 0, float32(hambuga.Width), float32(hambuga.Height)), rl.NewRectangle(25, float32(windowHeight)-60, float32(hambuga.Width)*1.5, float32(hambuga.Height)*1.5), rl.NewVector2(0, 0), 0, rl.White)
+	//rl.DrawTexturePro(chrome, rl.NewRectangle(0, 0, float32(chrome.Width), float32(chrome.Height)), rl.NewRectangle(25+float32(chrome.Width)*1.5, float32(windowHeight)-60, float32(hambuga.Width)*1.5, float32(hambuga.Height)*1.5), rl.NewVector2(0, 0), 0, rl.White)
+	// for each key in the map, draw the texture
+	var windowHeight = rl.GetScreenHeight()
+	//var windowWidth = rl.GetScreenWidth()
+
+	var totalIconWidth = 0
+	//sort.Strings(textures)
+	for key := range textureOrder {
+		var texture = textures[textureOrder[key]]
+		rl.DrawTexturePro(texture, //texture
+			rl.NewRectangle(0, 0, float32(texture.Width), float32(texture.Height)), //source
+			rl.NewRectangle( //dest
+				float32(totalIconWidth)+float32(texture.Width)*1.5, //x
+				float32(windowHeight)-60,                           //y
+				float32(texture.Width)*1.5,                         //width
+				float32(texture.Height)*1.5),                       //height
+			rl.NewVector2(0, 0),
+			0,
+			rl.White)
+		totalIconWidth += int(texture.Width) + 10
+	}
 }
