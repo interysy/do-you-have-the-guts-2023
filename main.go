@@ -30,8 +30,10 @@ func main() {
 
 	rl.InitWindow(800, 450, "Gamer OS")
 	rl.InitAudioDevice()
-	fxCarve := rl.LoadSound("assets/audio/carve_pumpkin.wav")
-	fxEmail := rl.LoadSound("assets/audio/email.wav")
+	fxCarve   := rl.LoadSound("assets/audio/carve_pumpkin.wav")
+	fxEmail   := rl.LoadSound("assets/audio/email.wav")
+	fxStartup := rl.LoadSound("assets/audio/startup.ogg")
+	fxRunning := rl.LoadMusicStream("assets/audio/running.ogg")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
 
@@ -66,6 +68,7 @@ func main() {
 	}
 
 	var textureOrder = []string{"email", "file_explorer", "chrome"}
+	rl.PlayMusicStream(fxRunning)
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		if state == "login" {
@@ -98,6 +101,7 @@ func main() {
 					}
 					if i == 9 {
 						state = "desktop"
+						rl.PlaySound(fxStartup)
 					}
 
 				}
