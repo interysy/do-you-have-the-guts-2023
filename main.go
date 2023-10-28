@@ -31,8 +31,6 @@ func main() {
 	rl.SetTargetFPS(60)
 	var pumpkins = loadPumpkin()
 	var secretFile rl.Texture2D = rl.LoadTexture("assets/lock.png")
-	var chrome rl.Texture2D = rl.LoadTexture("assets/chrome.png")
-	var hambuga rl.Texture2D = rl.LoadTexture("assets/hambuga.png")
 
 	var i = 1
 	var particles []rl.Rectangle
@@ -80,17 +78,12 @@ func main() {
 			rl.ClearBackground(PURPLE3)
 
 			rl.DrawRectangle(25, 25, int32(rl.GetScreenWidth())-50, int32(rl.GetScreenHeight())-50, rl.Purple)
-			drawTaskbar(hambuga, chrome)
+			drawTaskbar()
 
 			rl.DrawTexturePro(secretFile, rl.NewRectangle(0, 0, float32(secretFile.Width), float32(secretFile.Height)), rl.NewRectangle(float32(centraliseInX(int(secretFile.Width*3))+25), float32(centraliseInY(int(secretFile.Height*3))), float32(secretFile.Width)*3, float32(secretFile.Height)*3), rl.NewVector2(0, 0), 0, rl.White)
-			rl.DrawText("click me", centraliseInX(len("click me"))+4, centraliseInY(1)+42, 12, rl.Orange)
+			rl.DrawText("click me", centraliseInX(len("click me")*3), centraliseInY(1)+50, 12, rl.Orange)
 
-			//if collision with secrefile
-			if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(float32(centraliseInX(int(secretFile.Width*3))+25), float32(centraliseInY(int(secretFile.Height*3))), float32(secretFile.Width)*3, float32(secretFile.Height)*3)) {
-				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-					
-			}
-		
+		}
 		rl.EndDrawing()
 	}
 }
@@ -127,7 +120,10 @@ func loadPumpkin() []rl.Texture2D {
 	return pumpkin
 }
 
-func drawTaskbar(hambuga rl.Texture2D, chrome rl.Texture2D) {
+func drawTaskbar() {
+
+	var chrome rl.Texture2D = rl.LoadTexture("assets/chrome.png")
+	var hambuga rl.Texture2D = rl.LoadTexture("assets/hambuga.png")
 
 	var windowHeight = rl.GetScreenHeight()
 	var windowWidth = rl.GetScreenWidth()
