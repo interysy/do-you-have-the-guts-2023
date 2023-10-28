@@ -25,13 +25,14 @@ func main() {
 }
 
 func loginScreen() {
+	var particles []rl.Rectangle
 
 	rl.InitWindow(800, 450, "raylib [core] example - basic window")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
 
 	var texture rl.Texture2D = rl.LoadTexture("assets/pumpkin_stage_1.png")
-	var particles = []rl.Rectangle{}
+
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 
@@ -51,7 +52,6 @@ func loginScreen() {
 		rl.DrawRectangleRounded(rl.NewRectangle(float32(centraliseInX(200)), 275, 200, 20), 0.1, 0, rl.Orange)
 		rl.DrawText("password", 300, 275, 16, rl.White)
 
-		//check if mouse clicking while on top of the pumpkin, check collision
 		if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(xCentralRectangleCoordinate+45, float32(rl.GetScreenHeight()/4+50)), 50) {
 			if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 				particles = generateParticles(10, centraliseInX(25), 100)
