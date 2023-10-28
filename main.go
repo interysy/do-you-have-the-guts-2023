@@ -25,6 +25,8 @@ var (
 )
 
 var state string = "login"
+var password bool = false
+var authenticated bool = false
 
 func main() {
 
@@ -70,6 +72,7 @@ func main() {
 		rl.BeginDrawing()
 		if state == "login" {
 			//loginScreen()
+			getInput()
 			var pumpkin rl.Texture2D = pumpkins[i-1] // = rl.LoadTexture("assets/pumpkins/pumpkin_stage_1.png")
 
 			rl.ClearBackground(PURPLE1)
@@ -130,6 +133,7 @@ func main() {
 				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 					rl.PlaySound(fxEmail)
 					textures["email"] = mail_notif
+					password = !password
 				}
 			}
 			// var fileTextWidth = rl.MeasureText(fileText, 12)
@@ -139,6 +143,26 @@ func main() {
 
 			rl.DrawText(fileText, desktopSingleMargin+7, desktopSingleMargin+int32(newHeight)+5, 12, rl.Orange)
 
+			if password == true {
+				rectX := centraliseInX(300)
+				rectY := centraliseInY(100)
+
+				//TODO: use fergus' art to draw a rectangle with a border
+				//TODO: Fix this so that the text is centralised properly
+				rl.DrawRectangle(rectX, rectY, 300, 100, rl.Orange)
+
+				rl.DrawText("Enter Password", centraliseInX(int(rl.MeasureText("Enter Password", 12)))-10, centraliseInY(100)+105, 16, rl.White)
+				for i := 0; i < len(input); i++ {
+					rl.DrawCircle(rectX+int32(i*(300/4))+25, rectY+50, 25, rl.White)
+				}
+				if getInput() {
+					for i := 0; i < len(input); i++ {
+						rl.DrawCircle(rectX+int32(i*(300/4))+25, rectY+50, 25, rl.Black)
+					}
+					rl.PlaySound(fxEmail)
+					authenticated = true
+				}
+			}
 			if email_popout == true {
 				rl.DrawTexture(popout, 25, 25, rl.White)
 				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(365, 35), 10) {
@@ -170,7 +194,6 @@ func main() {
 					file_explorer_popout = true
 				}
 			}
-
 		}
 		rl.EndDrawing()
 	}
