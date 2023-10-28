@@ -29,7 +29,7 @@ func main() {
 	rl.InitWindow(800, 450, "raylib [core] example - basic window")
 	rl.InitAudioDevice()
 	fxCarve := rl.LoadSound("assets/audio/carve_pumpkin.wav")
-	fxEmail:= rl.LoadSound("assets/audio/email.wav")
+	fxEmail := rl.LoadSound("assets/audio/email.wav")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
 	var pumpkins = loadPumpkin()
@@ -41,6 +41,7 @@ func main() {
 		rl.BeginDrawing()
 		if state == "login" {
 			//loginScreen()
+			getInput()
 			var pumpkin rl.Texture2D = pumpkins[i-1] // = rl.LoadTexture("assets/pumpkins/pumpkin_stage_1.png")
 
 			rl.ClearBackground(PURPLE1)
@@ -70,7 +71,7 @@ func main() {
 					if i == 9 {
 						state = "desktop"
 					}
-					
+
 				}
 				updateParticles(particles, int32(CENTRAL))
 				renderParticles(particles)
