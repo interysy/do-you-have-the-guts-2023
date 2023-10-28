@@ -51,6 +51,7 @@ func main() {
 	var popout rl.Texture2D = rl.LoadTexture("assets/popout.png")
 	var textFile = rl.LoadTexture("assets/txt_file.png")
 	var imageFile = rl.LoadTexture("assets/image.png")
+	var desktop_frame = rl.LoadTexture("assets/desktop_frame.png")
 
 	var i = 1
 	var particles []rl.Rectangle
@@ -133,6 +134,7 @@ func main() {
 
 			rl.DrawRectangle(desktopSingleMargin, desktopSingleMargin, int32(SCREENWIDTH)-desktopDoubleMargin, int32(SCREENHEIGHT)-desktopDoubleMargin, rl.Purple)
 			rl.DrawRectangle(25, int32(windowHeight)-60, int32(windowWidth)-50, 40, rl.DarkPurple)
+			rl.DrawTexture(desktop_frame, 0, 0, rl.DarkPurple)
 			//call draw function that passes in the map
 
 			drawTaskbar(textures, textureOrder)
