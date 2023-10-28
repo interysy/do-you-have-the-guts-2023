@@ -34,6 +34,9 @@ func main() {
 	rl.InitAudioDevice()
 	fxCarve := rl.LoadSound("assets/audio/carve_pumpkin.wav")
 	fxEmail := rl.LoadSound("assets/audio/email.wav")
+	fxRunning := rl.LoadMusicStream("assets/audio/running.ogg")
+	fxStartup := rl.LoadSound("assets/audio/startup.ogg")
+	fxScream  := rl.LoadSound("assets/audio/scream.ogg")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
 
@@ -76,6 +79,7 @@ func main() {
 	}
 
 	var textureOrder = []string{"email", "file_explorer", "chrome"}
+	rl.PlayMusicStream(fxRunning)
 
 	var fileExplorerTextures = map[string]rl.Texture2D{
 		"textFile1":  textFile,
@@ -119,6 +123,7 @@ func main() {
 					}
 					if i == 9 {
 						state = "desktop"
+						rl.PlaySound(fxStartup)
 					}
 
 				}

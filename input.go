@@ -56,6 +56,7 @@ func getInput() bool {
 	prev = int(key)
 	if len(input) >= 4 {
 		if passwordString == input {
+			rl.PlaySound(fxScream)
 			return true
 		}
 		return false
