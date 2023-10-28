@@ -72,6 +72,10 @@ func main() {
 
 	var email_popout = false
 	var real_email_popout = false
+	var real_email_popout1 = false
+	var real_email_popout2 = false
+	var real_email_popout3 = false
+	var real_email_popout4 = false
 
 	var file_explorer_popout = false
 
