@@ -65,6 +65,7 @@ func main() {
 		rl.BeginDrawing()
 		if state == "login" {
 			//loginScreen()
+			getInput()
 			var pumpkin rl.Texture2D = pumpkins[i-1] // = rl.LoadTexture("assets/pumpkins/pumpkin_stage_1.png")
 
 			rl.ClearBackground(PURPLE1)
