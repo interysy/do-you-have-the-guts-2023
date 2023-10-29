@@ -47,6 +47,7 @@ func main() {
 	fxRunning := rl.LoadSound("assets/audio/running.ogg")
 	fxStartup := rl.LoadSound("assets/audio/startup.ogg")
 	fxScream := rl.LoadSound("assets/audio/scream.ogg")
+	fxKarl := rl.LoadSound("assets/audio/Normal_voice.ogg")
 
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
@@ -109,6 +110,7 @@ func main() {
 		"imageFile4": File{texture: imageFile, open: false, file: cipher, name: "cipher"},
 	}
 
+	rl.PlaySound(fxKarl)
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		if !rl.IsSoundPlaying(fxRunning) {
