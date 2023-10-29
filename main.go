@@ -288,7 +288,7 @@ func main() {
 			if file_explorer_popout == true {
 				// rl.DrawTexture(popout, 400, 25, rl.White)
 				rl.DrawTexturePro(popout, rl.NewRectangle(0, 0, float32(popout.Width), float32(popout.Height)), rl.NewRectangle(380, 25, float32(popout.Width)*1.1, float32(popout.Height)), rl.NewVector2(0, 0), 0, rl.White)
-				populateFileExplorer(fileExplorerTextures, popout)
+				populateFileExplorer(fileExplorerTextures, popout, fxEmail)
 				rl.DrawRectangle(int32(float32(popout.Width))+395, 35, 10, 10, rl.White)
 				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(395+float32(popout.Width), 35), 10) {
 					if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
@@ -370,7 +370,7 @@ func drawTaskbar(textures map[string]rl.Texture2D, textureOrder []string) {
 	}
 }
 
-func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Texture2D) {
+func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Texture2D, unlockSound rl.Sound) {
 
 	var order = []string{"textFile1", "textFile2", "textFile3", "imageFile1", "imageFile2", "imageFile3"}
 	var i float32 = 0
@@ -405,8 +405,10 @@ func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Textur
 
 		if fileExplorerTextures[order[key]].open == true && fileExplorerTextures[order[key]].locked == false {
 			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: fileExplorerTextures[order[key]].locked}
+		} else if fileExplorerTextures[order[key]].open == true && fileExplorerTextures[order[key]].locked == true {
+			fmt.Print("WTH")
+			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: fileExplorerTextures[order[key]].open, file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: unlockFile(unlockSound)}
 		}
-		// need condition for file being unlocked
 
 		// rl.DrawCircle(int32(x), int32(y), float32(texture.Width), rl.White)
 		// rl.DrawRectangle(int32(x), int32(y), int32(texture.Width)*2, int32(texture.Height)*2, rl.White)
@@ -426,25 +428,24 @@ func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Textur
 }
 
 func openPopUpFileExpolorer(popout rl.Texture2D, image rl.Texture2D, x int, y int, textures map[string]File, key string) bool {
-	var currentTexture = textures[key]
-	if currentTexture.locked == true {
-		unlockFile()
-	} else {
-		rl.DrawTexture(image, int32(x)+10, int32(y)+10, rl.White)
-		if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(float32(x)+float32(image.Width)-5, float32(y)+10), 20) {
-			if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-				return false
-			}
-		}
+	var locked = textures[key].locked
+	if locked == true {
 		return true
 	}
-	return false
+	rl.DrawTexture(image, int32(x)+10, int32(y)+10, rl.White)
+	if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(float32(x)+float32(image.Width)-5, float32(y)+10), 20) {
+		if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+			return false
+		}
+	}
+	return true
 }
 
-func unlockFile() {
+func unlockFile(sound rl.Sound) bool {
 	var rectX int32 = 400
 	var rectY int32 = 200
 
+	rl.DrawRectangle(centraliseInX(int(300)), centraliseInY(int(100)), 300, 100, rl.Orange)
 	rl.DrawText("Enter Password", centraliseInX(int(rl.MeasureText("Enter Password", 12)))-10, centraliseInY(100)+105, 16, rl.White)
 	for i := 0; i < len(fileInput); i++ {
 		rl.DrawCircle(rectX+int32(i*(300/4))+25, rectY+50, 25, rl.White)
@@ -453,7 +454,9 @@ func unlockFile() {
 		for i := 0; i < len(fileInput); i++ {
 			rl.DrawCircle(rectX+int32(i*(300/4))+25, rectY+50, 25, rl.Black)
 		}
-		// rl.PlaySound(fxEmail)
+		rl.PlaySound(sound)
 		authenticated = true
+		return false
 	}
+	return true
 }
