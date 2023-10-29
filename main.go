@@ -104,7 +104,7 @@ func main() {
 			rl.PlaySound(fxRunning)
 		}
 		if state == "startup" {
-			for i in range(100000){
+			for i := range 100000 {
 				rl.DrawTexturePro(missing_poster, //texture
 					rl.NewRectangle(0, 0, float32(missing_poster.Width), float32(missing_poster.Height)), //source
 					rl.NewRectangle( //dest
@@ -116,7 +116,7 @@ func main() {
 					0,
 					rl.Fade(rl.Black,1.0 - 1/10000))
 			}
-				
+			state = "login"
 		}
 		if state == "login" {
 			var pumpkin rl.Texture2D = pumpkins[i-1] // = rl.LoadTexture("assets/pumpkins/pumpkin_stage_1.png")
