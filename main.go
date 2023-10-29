@@ -24,7 +24,7 @@ var (
 	SCREENWIDTH  = rl.GetScreenWidth()
 )
 
-var state string = "login"
+var state string = "startup"
 var password bool = false
 var authenticated bool = false
 
@@ -63,6 +63,7 @@ func main() {
 	var goatHead = rl.LoadTexture("assets/goathead.png")
 	var calendar = rl.LoadTexture("assets/calendar.png")
 	var desktop_frame = rl.LoadTexture("assets/desktop_frame.png")
+	var missing_poster = rl.LoadTexture("assets/missing_poster_v2.png")
 
 	var i = 1
 	var particles []rl.Rectangle
@@ -101,6 +102,21 @@ func main() {
 		rl.BeginDrawing()
 		if !rl.IsSoundPlaying(fxRunning) {
 			rl.PlaySound(fxRunning)
+		}
+		if state == "startup" {
+			for i in range(100000){
+				rl.DrawTexturePro(missing_poster, //texture
+					rl.NewRectangle(0, 0, float32(missing_poster.Width), float32(missing_poster.Height)), //source
+					rl.NewRectangle( //dest
+						centraliseInX(float32(missing_poster.Width)*1.5), //x
+						centraliseInY(float32(missing_poster.Height)*1.5),                           //y
+						float32(missing_poster.Width)*1.5,                         //width
+						float32(missing_poster.Height)*1.5),                       //height
+					rl.NewVector2(0, 0),
+					0,
+					rl.Fade(rl.Black,1.0 - 1/10000))
+			}
+				
 		}
 		if state == "login" {
 			var pumpkin rl.Texture2D = pumpkins[i-1] // = rl.LoadTexture("assets/pumpkins/pumpkin_stage_1.png")
