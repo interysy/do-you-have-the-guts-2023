@@ -27,6 +27,7 @@ var state string = "startup"
 var password bool = false
 var authenticated bool = false
 var lockFilePassword string
+var scream bool = false
 
 type File struct {
 	texture rl.Texture2D
@@ -44,6 +45,8 @@ func main() {
 	fxEmail := rl.LoadSound("assets/audio/email.wav")
 	fxRunning := rl.LoadSound("assets/audio/running.ogg")
 	fxStartup := rl.LoadSound("assets/audio/startup.ogg")
+	fxScream := rl.LoadSound("assets/audio/scream.ogg")
+
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
 
@@ -208,7 +211,8 @@ func main() {
 						rl.DrawCircle(rectX+int32(i*(300/4))+25, rectY+50, 25, rl.Black)
 					}
 					rl.PlaySound(fxEmail)
-					authenticated = !authenticated
+					authenticated = true
+
 				}
 			}
 			if email_popout == true {
@@ -392,6 +396,44 @@ func main() {
 				}
 			}
 		}
+
+		if authenticated == true {
+			var end_screen = rl.LoadTexture("assets/end_screen.png")
+
+			//fmt.Print("bruh")
+			//rl.PlaySound(fxScream)
+
+			rl.DrawRectangle(0, 0, int32(800), int32(450), rl.Fade(rl.Black, fadeAlpha2))
+
+			if fadeAlpha2 >= 1 {
+				rl.DrawRectangle(0, 0, int32(800), int32(450), rl.Fade(rl.Black, fadeAlpha3))
+
+				rl.DrawTexturePro(end_screen, //texture
+					rl.NewRectangle(0, 0, float32(end_screen.Width), float32(end_screen.Height)), //source
+					rl.NewRectangle( //dest
+						float32(centraliseInX(int(end_screen.Width*2))),  //x
+						float32(centraliseInY(int(end_screen.Height*2))), //y
+						float32(end_screen.Width)*2,                      //width
+						float32(end_screen.Height)*2),                    //height
+					rl.NewVector2(0, 0),
+					0,
+					rl.Fade(rl.White, fadeAlpha3))
+
+				if fadeAlpha3 < 1 {
+					fadeAlpha3 += 0.002
+				} else {
+					if !rl.IsSoundPlaying(fxScream) && scream == false {
+						rl.PlaySound(fxScream)
+						scream = true
+					}
+
+				}
+			} else {
+				fadeAlpha2 += 0.02
+			}
+
+		}
+
 		rl.EndDrawing()
 	}
 	rl.UnloadSound(fxCarve)
