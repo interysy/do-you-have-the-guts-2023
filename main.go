@@ -411,17 +411,17 @@ func openPopUpFileExpolorer(popout rl.Texture2D, image rl.Texture2D, x int, y in
 }
 
 func unlockFile(sound rl.Sound) bool {
-	var rectX int32 = 400
+	var rectX int32 = 300
 	var rectY int32 = 200
 
 	rl.DrawRectangle(centraliseInX(int(300)), centraliseInY(int(100)), 300, 100, rl.Orange)
 	rl.DrawText("Enter Password", centraliseInX(int(rl.MeasureText("Enter Password", 12)))-10, centraliseInY(100)+105, 16, rl.White)
 	for i := 0; i < len(fileInput); i++ {
-		rl.DrawCircle(rectX+int32(i*(300/4))+25, rectY+50, 25, rl.White)
+		rl.DrawCircle(rectX+int32(i*(300/4))-10, rectY+25, 25, rl.White)
 	}
 	if fileGetInput() {
 		for i := 0; i < len(fileInput); i++ {
-			rl.DrawCircle(rectX+int32(i*(300/4))+25, rectY+50, 25, rl.Black)
+			rl.DrawCircle(rectX+int32(i*(300/4))-10, rectY+25, 25, rl.Black)
 		}
 		rl.PlaySound(sound)
 		authenticated = true
