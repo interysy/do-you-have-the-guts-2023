@@ -567,7 +567,6 @@ func unlockFile(sound rl.Sound) bool {
 			rl.DrawCircle(rectX+int32(i*(300/4))-10, rectY+25, 25, rl.Black)
 		}
 		rl.PlaySound(sound)
-		authenticated = true
 		return false
 	}
 	return true
