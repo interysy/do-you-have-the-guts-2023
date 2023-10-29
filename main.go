@@ -67,6 +67,7 @@ func main() {
 	var goatHead = rl.LoadTexture("assets/goathead_embed.png")
 	var calendar = rl.LoadTexture("assets/calendar.png")
 	var desktop_frame = rl.LoadTexture("assets/desktop_frame.png")
+	var cipher = rl.LoadTexture("assets/cipher.png")
 
 	var i = 1
 	var particles []rl.Rectangle
@@ -98,6 +99,7 @@ func main() {
 		"imageFile1": File{texture: imageFile, open: false, file: cult, name: "cult"},
 		"imageFile2": File{texture: imageFile, open: false, file: goatHead, name: "goat", locked: true},
 		"imageFile3": File{texture: imageFile, open: false, file: calendar, name: "diary"},
+		"imageFile4": File{texture: imageFile, open: false, file: cipher, name: "cipher"},
 	}
 
 	for !rl.WindowShouldClose() {
@@ -422,12 +424,12 @@ func drawTaskbar(textures map[string]rl.Texture2D, textureOrder []string) {
 
 func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Texture2D, unlockSound rl.Sound, textFile rl.Texture2D) {
 
-	var order = []string{"textFile1", "textFile2", "textFile3", "imageFile1", "imageFile2", "imageFile3"}
+	var order = []string{"textFile1", "textFile2", "imageFile4", "imageFile1", "imageFile2", "imageFile3"}
 	var i float32 = 0
 	var nextLineY = 0
 	for key := range order {
 		var texture = fileExplorerTextures[order[key]].texture
-
+		fmt.Print(string(order[key]) + "\n")
 		var x = float32(400) + float32(texture.Width) + ((float32(texture.Width)*2 + 10) * i)
 		var y = float32(25) + float32(texture.Height) + float32(nextLineY)
 
@@ -469,8 +471,6 @@ func openPopUpFileExpolorer(popout rl.Texture2D, image rl.Texture2D, x int, y in
 	}
 	rl.DrawTexture(image, int32(x)+10, int32(y)+10, rl.White)
 	if textures[key].texture == textFile {
-		fmt.Print("hello")
-		fmt.Print(textures[key].text)
 		rl.DrawText(textures[key].text, int32(x)+20, int32(y)+40, 16, rl.White)
 	}
 
