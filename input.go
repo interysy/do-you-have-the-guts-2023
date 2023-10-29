@@ -8,7 +8,6 @@ var passwordString = "1234"
 var input = ""
 var prev = rl.KeyNull
 
-
 func getInput() bool {
 	key := rl.GetKeyPressed()
 	if prev == int(key) {
@@ -66,7 +65,7 @@ func getInput() bool {
 	return false
 }
 
-var filePasswordString = "1234"
+var filePasswordString = "0610"
 var fileInput = ""
 var filePrev = rl.KeyNull
 
@@ -76,7 +75,7 @@ func fileGetInput() bool {
 		return false
 	}
 
-	if len(input) == 4 && key != rl.KeyBackspace || len(input) == 0 && key == rl.KeyBackspace {
+	if len(fileInput) == 4 && key != rl.KeyBackspace || len(fileInput) == 0 && key == rl.KeyBackspace {
 		return false
 	}
 	switch key {
