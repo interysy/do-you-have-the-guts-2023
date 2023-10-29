@@ -62,7 +62,7 @@ func main() {
 	var textFile = rl.LoadTexture("assets/txt_file.png")
 	var imageFile = rl.LoadTexture("assets/image.png")
 	var cult = rl.LoadTexture("assets/cult.png")
-	var goatHead = rl.LoadTexture("assets/goathead.png")
+	var goatHead = rl.LoadTexture("assets/goathead_embed.png")
 	var calendar = rl.LoadTexture("assets/calendar.png")
 	var desktop_frame = rl.LoadTexture("assets/desktop_frame.png")
 
@@ -354,14 +354,14 @@ func main() {
 			//Collision check on email icon
 			if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(45, float32(rl.GetScreenHeight()-40)), 18) {
 				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-					email_popout = !email_popout 
+					email_popout = !email_popout
 				}
 			}
 
 			// Collision on file explorer icon
 			if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(90, float32(rl.GetScreenHeight()-40)), 18) {
 				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-					file_explorer_popout = !file_explorer_popout 
+					file_explorer_popout = !file_explorer_popout
 				}
 			}
 		}
