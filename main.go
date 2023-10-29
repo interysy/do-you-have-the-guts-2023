@@ -67,6 +67,7 @@ func main() {
 	var calendar = rl.LoadTexture("assets/calendar.png")
 	var desktop_frame = rl.LoadTexture("assets/desktop_frame.png")
 	var cipher = rl.LoadTexture("assets/cipher.png")
+	var bin = rl.LoadTexture("assets/recycle.png")
 
 	var i = 1
 	var particles []rl.Rectangle
@@ -88,9 +89,10 @@ func main() {
 		"chrome":        chrome,
 		"file_explorer": file_explorer,
 		"email":         mail,
+		"bin":           bin,
 	}
 
-	var textureOrder = []string{"email", "file_explorer", "chrome"}
+	var textureOrder = []string{"email", "file_explorer", "chrome", "bin"}
 
 	var fileExplorerTextures = map[string]File{
 		"textFile1":  File{texture: textFile, open: false, file: popout, name: "text", text: "We solemnly affirm our devotion, on the eve \nof our year's twilight. Samhain, the \ncommunion of the worshippers on the \nhallowed eve, where the veil between the \nliving and the damned is at its thinnest. \nIn the sanctuary of the moon’s wick, \nthe inky midnights’ calling brings us to unveil. \n"},
