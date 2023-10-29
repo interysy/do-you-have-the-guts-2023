@@ -35,6 +35,7 @@ type File struct {
 	file    rl.Texture2D
 	name    string
 	locked  bool
+	text    string
 }
 
 func main() {
@@ -69,6 +70,8 @@ func main() {
 	var calendar = rl.LoadTexture("assets/calendar.png")
 	var desktop_frame = rl.LoadTexture("assets/desktop_frame.png")
 	var missing_poster = rl.LoadTexture("assets/missing_poster_v2.png")
+	var cipher = rl.LoadTexture("assets/cipher.png")
+	var bin = rl.LoadTexture("assets/recycle.png")
 
 	var i = 1
 	var particles []rl.Rectangle
@@ -90,19 +93,20 @@ func main() {
 		"chrome":        chrome,
 		"file_explorer": file_explorer,
 		"email":         mail,
+		"bin":           bin,
 	}
 
-	var textureOrder = []string{"email", "file_explorer", "chrome"}
 	var fadeAlpha float32 = 1
 	var cntr = 0
+	var textureOrder = []string{"email", "file_explorer", "chrome", "bin"}
 
 	var fileExplorerTextures = map[string]File{
-		"textFile1":  File{texture: textFile, open: false, file: popout, name: "text"},
-		"textFile2":  File{texture: textFile, open: false, file: popout, name: "text"},
-		"textFile3":  File{texture: textFile, open: false, file: popout, name: "text"},
+		"textFile1":  File{texture: textFile, open: false, file: popout, name: "text", text: "We solemnly affirm our devotion, on the eve \nof our year's twilight. Samhain, the \ncommunion of the worshippers on the \nhallowed eve, where the veil between the \nliving and the damned is at its thinnest. \nIn the sanctuary of the moon’s wick, \nthe inky midnights’ calling brings us to unveil. \n"},
+		"textFile2":  File{texture: textFile, open: false, file: popout, name: "text", text: "If you find this, stop looking around my stuff,\nbut listen.They're right, and you \nare all in denial, Samhain will change\n everything. Soon you'll see, I hope you can\njoin me in this journey.\nDo not worry for me, I am happier with them.\nWith The Brotherhood."},
 		"imageFile1": File{texture: imageFile, open: false, file: cult, name: "cult"},
 		"imageFile2": File{texture: imageFile, open: false, file: goatHead, name: "goat", locked: true},
 		"imageFile3": File{texture: imageFile, open: false, file: calendar, name: "diary"},
+		"imageFile4": File{texture: imageFile, open: false, file: cipher, name: "cipher"},
 	}
 
 	for !rl.WindowShouldClose() {
@@ -374,7 +378,8 @@ func main() {
 
 			if file_explorer_popout == true {
 				rl.DrawTexturePro(popout, rl.NewRectangle(0, 0, float32(popout.Width), float32(popout.Height)), rl.NewRectangle(380, 25, float32(popout.Width)*1.1, float32(popout.Height)), rl.NewVector2(0, 0), 0, rl.White)
-				populateFileExplorer(fileExplorerTextures, popout, fxEmail)
+
+				populateFileExplorer(fileExplorerTextures, popout, fxEmail, textFile)
 				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(395+float32(popout.Width), 35), 10) {
 					if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 						file_explorer_popout = !file_explorer_popout
@@ -488,9 +493,8 @@ func drawTaskbar(textures map[string]rl.Texture2D, textureOrder []string) {
 	}
 }
 
-func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Texture2D, unlockSound rl.Sound) {
-
-	var order = []string{"textFile1", "textFile2", "textFile3", "imageFile1", "imageFile2", "imageFile3"}
+func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Texture2D, unlockSound rl.Sound, textFile rl.Texture2D) {
+	var order = []string{"textFile1", "textFile2", "imageFile4", "imageFile1", "imageFile2", "imageFile3"}
 	var i float32 = 0
 	var nextLineY = 0
 	for key := range order {
@@ -515,14 +519,15 @@ func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Textur
 		rl.DrawText(fileText, int32(x)+texture.Width/2, int32(y)+int32(textSizing.Y)*5, 12, rl.Orange)
 
 		if fileExplorerTextures[order[key]].open == true && fileExplorerTextures[order[key]].locked == false {
-			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: fileExplorerTextures[order[key]].locked}
+			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key], textFile), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: fileExplorerTextures[order[key]].locked, text: fileExplorerTextures[order[key]].text}
+
 		} else if fileExplorerTextures[order[key]].open == true && fileExplorerTextures[order[key]].locked == true {
 			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: fileExplorerTextures[order[key]].open, file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: unlockFile(unlockSound)}
 		}
 
 		if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.Rectangle{x, y, float32(texture.Width * 2), float32(texture.Height * 2)}) {
 			if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-				fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: fileExplorerTextures[order[key]].locked}
+				fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key], textFile), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: fileExplorerTextures[order[key]].locked, text: fileExplorerTextures[order[key]].text}
 			}
 		}
 		i++
@@ -530,12 +535,16 @@ func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Textur
 
 }
 
-func openPopUpFileExpolorer(popout rl.Texture2D, image rl.Texture2D, x int, y int, textures map[string]File, key string) bool {
+func openPopUpFileExpolorer(popout rl.Texture2D, image rl.Texture2D, x int, y int, textures map[string]File, key string, textFile rl.Texture2D) bool {
 	var locked = textures[key].locked
 	if locked == true {
 		return true
 	}
 	rl.DrawTexture(image, int32(x)+10, int32(y)+10, rl.White)
+	if textures[key].texture == textFile {
+		rl.DrawText(textures[key].text, int32(x)+20, int32(y)+40, 16, rl.White)
+	}
+
 	if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(float32(x)+float32(image.Width)-5, float32(y)+10), 20) {
 		if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 			return false
