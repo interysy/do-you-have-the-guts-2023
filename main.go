@@ -23,7 +23,7 @@ var (
 	SCREENWIDTH  = rl.GetScreenWidth()
 )
 
-var state string = "login"
+var state string = "startup"
 var password bool = false
 var authenticated bool = false
 var lockFilePassword string
@@ -66,6 +66,7 @@ func main() {
 	var goatHead = rl.LoadTexture("assets/goathead_embed.png")
 	var calendar = rl.LoadTexture("assets/calendar.png")
 	var desktop_frame = rl.LoadTexture("assets/desktop_frame.png")
+	var missing_poster = rl.LoadTexture("assets/missing_poster_v2.png")
 	var cipher = rl.LoadTexture("assets/cipher.png")
 	var bin = rl.LoadTexture("assets/recycle.png")
 
@@ -92,6 +93,8 @@ func main() {
 		"bin":           bin,
 	}
 
+	var fadeAlpha float32 = 1
+	var cntr = 0
 	var textureOrder = []string{"email", "file_explorer", "chrome", "bin"}
 
 	var fileExplorerTextures = map[string]File{
@@ -108,6 +111,30 @@ func main() {
 		if !rl.IsSoundPlaying(fxRunning) {
 			rl.PlaySound(fxRunning)
 		}
+		if state == "startup" {
+			rl.ClearBackground(PURPLE1)
+
+			rl.DrawRectangle(0, 0, int32(SCREENWIDTH), int32(SCREENHEIGHT), rl.Fade(rl.Black, fadeAlpha))
+
+			rl.DrawTexturePro(missing_poster, //texture
+				rl.NewRectangle(0, 0, float32(missing_poster.Width), float32(missing_poster.Height)), //source
+				rl.NewRectangle( //dest
+					float32(centraliseInX(int(missing_poster.Width*2))),  //x
+					float32(centraliseInY(int(missing_poster.Height*2))), //y
+					float32(missing_poster.Width)*2,                      //width
+					float32(missing_poster.Height)*2),                    //height
+				rl.NewVector2(0, 0),
+				0,
+				rl.Fade(rl.White, fadeAlpha))
+
+			if fadeAlpha < 0 {
+				state = "login"
+			} else if cntr < 200 {
+				cntr++
+			} else {
+				fadeAlpha -= 0.02
+			}
+		}
 		if state == "login" {
 			var pumpkin rl.Texture2D = pumpkins[i-1]
 
@@ -118,7 +145,7 @@ func main() {
 
 			rl.DrawTexture(pumpkin, centraliseInX(int(pumpkin.Width)), int32(rl.GetScreenHeight()/4)+5, rl.White)
 
-			loginUserName := "common jp morgan enjoyer"
+			loginUserName := "Jonathan"
 			rl.DrawText(loginUserName, centraliseInX(len(loginUserName)*7), 250, 15, rl.Orange)
 			rl.DrawRectangleRounded(rl.NewRectangle(float32(centraliseInX(200)), 275, 200, 20), 0.1, 0, rl.Orange)
 			rl.DrawText("password", 300, 275, 16, rl.White)
@@ -347,6 +374,7 @@ func main() {
 
 			if file_explorer_popout == true {
 				rl.DrawTexturePro(popout, rl.NewRectangle(0, 0, float32(popout.Width), float32(popout.Height)), rl.NewRectangle(380, 25, float32(popout.Width)*1.1, float32(popout.Height)), rl.NewVector2(0, 0), 0, rl.White)
+
 				populateFileExplorer(fileExplorerTextures, popout, fxEmail, textFile)
 				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(395+float32(popout.Width), 35), 10) {
 					if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
@@ -424,7 +452,6 @@ func drawTaskbar(textures map[string]rl.Texture2D, textureOrder []string) {
 }
 
 func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Texture2D, unlockSound rl.Sound, textFile rl.Texture2D) {
-
 	var order = []string{"textFile1", "textFile2", "imageFile4", "imageFile1", "imageFile2", "imageFile3"}
 	var i float32 = 0
 	var nextLineY = 0
@@ -451,6 +478,7 @@ func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Textur
 
 		if fileExplorerTextures[order[key]].open == true && fileExplorerTextures[order[key]].locked == false {
 			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key], textFile), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: fileExplorerTextures[order[key]].locked, text: fileExplorerTextures[order[key]].text}
+
 		} else if fileExplorerTextures[order[key]].open == true && fileExplorerTextures[order[key]].locked == true {
 			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: fileExplorerTextures[order[key]].open, file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: unlockFile(unlockSound)}
 		}
