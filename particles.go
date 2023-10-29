@@ -17,8 +17,8 @@ func generateParticles(num_particles int, x int32, y int32) []rl.Rectangle {
 	for i := 0; i < num_particles; i++ {
 		particles[i].X = float32(x + rand.Int31n(deviation))
 		particles[i].Y = float32(y + rand.Int31n(deviation))
-		particles[i].Width = 25
-		particles[i].Height = 25
+		particles[i].Width = 15
+		particles[i].Height = 15
 	}
 
 	return particles

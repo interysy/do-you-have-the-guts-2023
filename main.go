@@ -279,7 +279,7 @@ func main() {
 					//collision check on email 1,2,3,4
 					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 200, 300, 48)) {
 						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout4 = !real_email_popout4
+							real_email_popout1 = !real_email_popout1
 						}
 					}
 
@@ -330,17 +330,17 @@ func main() {
 
 					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 50, 300, 48)) {
 						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout1 = !real_email_popout1
+							real_email_popout2 = !real_email_popout2
 						}
 					}
 					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 100, 300, 48)) {
 						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout2 = !real_email_popout2
+							real_email_popout3 = !real_email_popout3
 						}
 					}
 					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 150, 300, 48)) {
 						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout3 = !real_email_popout3
+							real_email_popout4 = !real_email_popout4
 						}
 					}
 				}
@@ -352,7 +352,7 @@ func main() {
 				populateFileExplorer(fileExplorerTextures, popout)
 				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(760, 35), 10) {
 					if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-						file_explorer_popout = false
+						file_explorer_popout = !file_explorer_popout
 					}
 				}
 			}
@@ -360,14 +360,14 @@ func main() {
 			//Collision check on email icon
 			if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(45, float32(rl.GetScreenHeight()-40)), 18) {
 				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-					email_popout = !email_popout
+					email_popout = !email_popout 
 				}
 			}
 
 			// Collision on file explorer icon
 			if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(90, float32(rl.GetScreenHeight()-40)), 18) {
 				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-					file_explorer_popout = !file_explorer_popout
+					file_explorer_popout = !file_explorer_popout 
 				}
 			}
 		}
