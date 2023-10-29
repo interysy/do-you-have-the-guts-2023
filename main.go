@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -104,17 +103,13 @@ func main() {
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		if state == "login" {
-			var pumpkin rl.Texture2D = pumpkins[i-1] // = rl.LoadTexture("assets/pumpkins/pumpkin_stage_1.png")
+			var pumpkin rl.Texture2D = pumpkins[i-1]
 
 			rl.ClearBackground(PURPLE1)
 
 			xCentralRectangleCoordinate := float32(centraliseInX(90))
-			//var iconRectangle = rl.NewRectangle(xCentralRectangleCoordinate, float32(rl.GetScreenHeight())/4+7, 90, 90)
-
-			// DrawBorderedRectangle(iconRectangle, 5, PURPLE1, rl.White)
 			rl.DrawCircle(int32(xCentralRectangleCoordinate+45), int32(rl.GetScreenHeight()/4+50), 50, rl.DarkPurple)
 
-			//rl.DrawTexturePro(texture, rl.NewRectangle(0, 0, float32(texture.Width), float32(texture.Height)), rl.NewRectangle(posX, posY, width*scaleX, height*scaleY), rl.NewVector2(0, 0), 0, tint)
 			rl.DrawTexture(pumpkin, centraliseInX(int(pumpkin.Width)), int32(rl.GetScreenHeight()/4)+5, rl.White)
 
 			loginUserName := "common jp morgan enjoyer"
@@ -126,7 +121,6 @@ func main() {
 				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 					i++
 					if i < 10 {
-						fmt.Println(i)
 						rl.PlaySound(fxCarve)
 						particles = generateParticles(10, centraliseInX(25), 100)
 					}
@@ -149,7 +143,6 @@ func main() {
 			rl.DrawRectangle(desktopSingleMargin, desktopSingleMargin, int32(SCREENWIDTH)-desktopDoubleMargin, int32(SCREENHEIGHT)-desktopDoubleMargin, rl.Purple)
 			rl.DrawRectangle(25, int32(windowHeight)-60, int32(windowWidth)-50, 40, rl.DarkPurple)
 			rl.DrawTexture(desktop_frame, 0, 0, rl.DarkPurple)
-			//call draw function that passes in the map
 
 			drawTaskbar(textures, textureOrder)
 
@@ -161,7 +154,6 @@ func main() {
 			rl.DrawTexturePro(secretFile, baseSecretFileSize, largeSecretFileSize, rl.NewVector2(0, 0), 0, rl.White)
 
 			var fileText = "click me"
-			// collision check on secret file
 			if rl.CheckCollisionPointRec(rl.GetMousePosition(), largeSecretFileSize) {
 				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 					rl.PlaySound(fxEmail)
@@ -220,7 +212,6 @@ func main() {
 
 					if real_email_popout1 == true {
 						rl.DrawTexture(popout, 300, 25, rl.White)
-						//add text inside drawing
 
 						rl.DrawText("From: Pete (BLOCKED)\tDate: 15/08\nDude,\nI really don't think you should be getting involved \nwith these guys, I had a look at the stuff you sent me \nearlier today and it sounds really... weird.\nPlease respond, we gotta talk.", 315, 35, 12, rl.White)
 
@@ -286,10 +277,8 @@ func main() {
 			}
 
 			if file_explorer_popout == true {
-				// rl.DrawTexture(popout, 400, 25, rl.White)
 				rl.DrawTexturePro(popout, rl.NewRectangle(0, 0, float32(popout.Width), float32(popout.Height)), rl.NewRectangle(380, 25, float32(popout.Width)*1.1, float32(popout.Height)), rl.NewVector2(0, 0), 0, rl.White)
 				populateFileExplorer(fileExplorerTextures, popout, fxEmail)
-				rl.DrawRectangle(int32(float32(popout.Width))+395, 35, 10, 10, rl.White)
 				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(395+float32(popout.Width), 35), 10) {
 					if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 						file_explorer_popout = false
@@ -346,23 +335,18 @@ func loadPumpkin() []rl.Texture2D {
 }
 
 func drawTaskbar(textures map[string]rl.Texture2D, textureOrder []string) {
-	//rl.DrawTexturePro(hambuga, rl.NewRectangle(0, 0, float32(hambuga.Width), float32(hambuga.Height)), rl.NewRectangle(25, float32(windowHeight)-60, float32(hambuga.Width)*1.5, float32(hambuga.Height)*1.5), rl.NewVector2(0, 0), 0, rl.White)
-	//rl.DrawTexturePro(chrome, rl.NewRectangle(0, 0, float32(chrome.Width), float32(chrome.Height)), rl.NewRectangle(25+float32(chrome.Width)*1.5, float32(windowHeight)-60, float32(hambuga.Width)*1.5, float32(hambuga.Height)*1.5), rl.NewVector2(0, 0), 0, rl.White)
-	// for each key in the map, draw the texture
 	var windowHeight = rl.GetScreenHeight()
-	//var windowWidth = rl.GetScreenWidth()
-
 	var totalIconWidth = 0
-	//sort.Strings(textures)
+
 	for key := range textureOrder {
 		var texture = textures[textureOrder[key]]
-		rl.DrawTexturePro(texture, //texture
-			rl.NewRectangle(0, 0, float32(texture.Width), float32(texture.Height)), //source
+		rl.DrawTexturePro(texture,
+			rl.NewRectangle(0, 0, float32(texture.Width), float32(texture.Height)),
 			rl.NewRectangle( //dest
-				float32(totalIconWidth)+float32(texture.Width)*1.5, //x
-				float32(windowHeight)-60,                           //y
-				float32(texture.Width)*1.5,                         //width
-				float32(texture.Height)*1.5),                       //height
+				float32(totalIconWidth)+float32(texture.Width)*1.5,
+				float32(windowHeight)-60,
+				float32(texture.Width)*1.5,
+				float32(texture.Height)*1.5),
 			rl.NewVector2(0, 0),
 			0,
 			rl.White)
@@ -374,16 +358,9 @@ func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Textur
 
 	var order = []string{"textFile1", "textFile2", "textFile3", "imageFile1", "imageFile2", "imageFile3"}
 	var i float32 = 0
-	// var g bool = false
 	var nextLineY = 0
 	for key := range order {
-		//fmt.Println(string(key) + "\n")
 		var texture = fileExplorerTextures[order[key]].texture
-		// if g {
-		// 	nextLineY = int(texture.Height*2 + 10)
-		// } else {
-		// 	nextLineY = 0
-		// }
 
 		var x = float32(400) + float32(texture.Width) + ((float32(texture.Width)*2 + 10) * i)
 		var y = float32(25) + float32(texture.Height) + float32(nextLineY)
@@ -406,23 +383,15 @@ func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Textur
 		if fileExplorerTextures[order[key]].open == true && fileExplorerTextures[order[key]].locked == false {
 			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: fileExplorerTextures[order[key]].locked}
 		} else if fileExplorerTextures[order[key]].open == true && fileExplorerTextures[order[key]].locked == true {
-			fmt.Print("WTH")
 			fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: fileExplorerTextures[order[key]].open, file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: unlockFile(unlockSound)}
 		}
 
-		// rl.DrawCircle(int32(x), int32(y), float32(texture.Width), rl.White)
-		// rl.DrawRectangle(int32(x), int32(y), int32(texture.Width)*2, int32(texture.Height)*2, rl.White)
 		if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.Rectangle{x, y, float32(texture.Width * 2), float32(texture.Height * 2)}) {
 			if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 				fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key]), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: fileExplorerTextures[order[key]].locked}
-				// fileExplorerTextures[order[key]] = File{texture: texture, open: true}
 			}
 		}
 		i++
-		// if g {
-		// 	i++
-		// }
-		// g = !g
 	}
 
 }
