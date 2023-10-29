@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -429,7 +428,7 @@ func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Textur
 	var nextLineY = 0
 	for key := range order {
 		var texture = fileExplorerTextures[order[key]].texture
-		fmt.Print(string(order[key]) + "\n")
+
 		var x = float32(400) + float32(texture.Width) + ((float32(texture.Width)*2 + 10) * i)
 		var y = float32(25) + float32(texture.Height) + float32(nextLineY)
 
