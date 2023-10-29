@@ -485,7 +485,11 @@ func populateFileExplorer(fileExplorerTextures map[string]File, popout rl.Textur
 
 		if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.Rectangle{x, y, float32(texture.Width * 2), float32(texture.Height * 2)}) {
 			if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-				fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key], textFile), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: fileExplorerTextures[order[key]].locked, text: fileExplorerTextures[order[key]].text}
+				if fileExplorerTextures[order[key]].open == true {
+					fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: false, file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: fileExplorerTextures[order[key]].locked, text: fileExplorerTextures[order[key]].text}
+				} else {
+					fileExplorerTextures[order[key]] = File{texture: fileExplorerTextures[order[key]].texture, open: openPopUpFileExpolorer(popout, fileExplorerTextures[order[key]].file, int(centraliseInX(int(fileExplorerTextures[order[key]].file.Width))), int(centraliseInY(int(fileExplorerTextures[order[key]].file.Height))), fileExplorerTextures, order[key], textFile), file: fileExplorerTextures[order[key]].file, name: fileExplorerTextures[order[key]].name, locked: fileExplorerTextures[order[key]].locked, text: fileExplorerTextures[order[key]].text}
+				}
 			}
 		}
 		i++
