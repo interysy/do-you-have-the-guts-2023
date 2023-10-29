@@ -42,7 +42,7 @@ func main() {
 	rl.InitAudioDevice()
 	fxCarve := rl.LoadSound("assets/audio/carve_pumpkin.wav")
 	fxEmail := rl.LoadSound("assets/audio/email.wav")
-	fxRunning := rl.LoadMusicStream("assets/audio/running.ogg")
+	fxRunning := rl.LoadSound("assets/audio/running.ogg")
 	fxStartup := rl.LoadSound("assets/audio/startup.ogg")
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
@@ -89,7 +89,6 @@ func main() {
 	}
 
 	var textureOrder = []string{"email", "file_explorer", "chrome"}
-	rl.PlayMusicStream(fxRunning)
 
 	var fileExplorerTextures = map[string]File{
 		"textFile1":  File{texture: textFile, open: false, file: popout, name: "text"},
@@ -102,6 +101,9 @@ func main() {
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
+		if !rl.IsSoundPlaying(fxRunning) {
+			rl.PlaySound(fxRunning)
+		}
 		if state == "login" {
 			var pumpkin rl.Texture2D = pumpkins[i-1]
 
@@ -122,7 +124,7 @@ func main() {
 					i++
 					if i < 10 {
 						rl.PlaySound(fxCarve)
-						particles = generateParticles(10, centraliseInX(25), 100)
+						particles = generateParticles(25, centraliseInX(25), 100)
 					}
 					if i == 9 {
 						state = "desktop"
@@ -179,7 +181,7 @@ func main() {
 						rl.DrawCircle(rectX+int32(i*(300/4))+25, rectY+50, 25, rl.Black)
 					}
 					rl.PlaySound(fxEmail)
-					authenticated = true
+					authenticated = !authenticated
 				}
 			}
 			if email_popout == true {
@@ -193,27 +195,27 @@ func main() {
 				//add 4 boxed emails here
 				if textures["email"] == mail_notif {
 					//add 4 boxes as wide as the popout with "email 1" text inside the box
+
 					rl.DrawRectangle(150, 50, 300, 48, rl.DarkPurple)
 					rl.DrawRectangle(150, 100, 300, 48, rl.DarkPurple)
 					rl.DrawRectangle(150, 150, 300, 48, rl.DarkPurple)
 					rl.DrawRectangle(150, 200, 300, 48, rl.DarkPurple)
 
-					//titles
 					rl.DrawText("Pete (BLOCKED)", 155, 52, 16, rl.White)
 					rl.DrawText("The Lottery Co.", 155, 102, 16, rl.White)
 					rl.DrawText("Lukas", 155, 152, 16, rl.White)
-					rl.DrawText("Email 4", 155, 202, 16, rl.White)
+					rl.DrawText("(Sender Unknown)", 155, 202, 16, rl.White)
 
 					//subtitles
-					rl.DrawText("Subject: Please listen to me...", 155, 65, 12, rl.White)
-					rl.DrawText("Subject: You have won a free car", 155, 115, 12, rl.White)
-					rl.DrawText("Subject: Soon...", 155, 165, 12, rl.White)
-					rl.DrawText("Subject: You have won a free car", 155, 215, 12, rl.White)
+					rl.DrawText("Subject: Please listen to me...", 155, 65, 14, rl.White)
+					rl.DrawText("Subject: You have won a free car", 155, 115, 14, rl.White)
+					rl.DrawText("Subject: Soon...", 155, 165, 14, rl.White)
+					rl.DrawText("Subject: You have won a free car", 155, 215, 14, rl.White)
 
 					if real_email_popout1 == true {
 						rl.DrawTexture(popout, 300, 25, rl.White)
 
-						rl.DrawText("From: Pete (BLOCKED)\tDate: 15/08\nDude,\nI really don't think you should be getting involved \nwith these guys, I had a look at the stuff you sent me \nearlier today and it sounds really... weird.\nPlease respond, we gotta talk.", 315, 35, 12, rl.White)
+						rl.DrawText("From: Pete (BLOCKED)\tDate: 15/08\nDude,\nI really don't think you should be getting involved \nwith these guys, I had a look at the stuff you \nsent me earlier today and it sounds really... weird.\n\nPlease respond, we gotta talk.", 315, 35, 14, rl.White)
 
 						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(640, 35), 10) {
 							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
@@ -223,7 +225,7 @@ func main() {
 					}
 					if real_email_popout2 == true {
 						rl.DrawTexture(popout, 310, 35, rl.White)
-						rl.DrawText("From: The Lottery Co.\t16/08\nYOU WON A FREE CAR!!!!\nCALL US NOW ON +44 (0)7314982430 TO\nCLAIM YOUR FREE 2001 HONDA CIVIC!!!!", 325, 45, 12, rl.White)
+						rl.DrawText("From: The Lottery Co.\t16/08\nYOU WON A FREE CAR!!!!\nCALL US NOW ON +44 (0)7314982430 TO\nCLAIM YOUR FREE 2001 HONDA CIVIC!!!!", 325, 45, 14, rl.White)
 						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(650, 45), 10) {
 							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 								real_email_popout2 = false
@@ -232,15 +234,35 @@ func main() {
 					}
 					if real_email_popout3 == true {
 						rl.DrawTexture(popout, 320, 45, rl.White)
-						rl.DrawText("From: Lukas (SB)\t30/10\nGood evening,\nfirst:\nthe Festival will be fulfilled In the Very next Evening.\nEach Individual shall Get all He can Think of.\nthe brotherhood looks forward to seeing you,\nLukas", 335, 55, 12, rl.White)
+						rl.DrawText("From: Lukas (SB)\t30/10\nGood evening,\nfirst:\nFestival will be fulfilled In the Very next Evening.\nEach Individual shall Get all He can Think of.\nthe brotherhood looks forward to seeing you,\n\nLukas", 335, 55, 14, rl.White)
 						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(660, 65), 10) {
 							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 								real_email_popout3 = false
 							}
 						}
 					}
+
+					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 50, 300, 48)) {
+						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+							real_email_popout1 = !real_email_popout1
+						}
+					}
+					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 100, 300, 48)) {
+						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+							real_email_popout2 = !real_email_popout2
+						}
+					}
+					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 150, 300, 48)) {
+						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+							real_email_popout3 = !real_email_popout3
+						}
+					}
+
+					//titles
+
 					if real_email_popout4 == true {
 						rl.DrawTexture(popout, 330, 55, rl.White)
+						rl.DrawText("From: (Sender Unknown)\t07/11\nI see that you are finally looking in the right \nplaces.\nIf you ever want to see him again, \nmake sure to look closely.\nRemember when it all began.\nI have already given you the first.\nsecond:\nThe Rest, Each and Everything, is in your hands.", 345, 65, 14, rl.White)
 						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(670, 75), 10) {
 							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 								real_email_popout4 = false
@@ -249,29 +271,72 @@ func main() {
 					}
 
 					//collision check on email 1,2,3,4
-					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 50, 300, 48)) {
-						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout1 = true
-						}
-					}
-					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 100, 300, 48)) {
-						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout2 = true
-						}
-					}
-					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 150, 300, 48)) {
-						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout3 = true
-						}
-					}
 					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 200, 300, 48)) {
 						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-							real_email_popout4 = true
+							real_email_popout4 = !real_email_popout4
 						}
 					}
 
 				} else {
-					rl.DrawText("You have no new emails", 150, 50, 12, rl.White)
+					rl.DrawRectangle(150, 50, 300, 48, rl.DarkPurple)
+					rl.DrawRectangle(150, 100, 300, 48, rl.DarkPurple)
+					rl.DrawRectangle(150, 150, 300, 48, rl.DarkPurple)
+
+					rl.DrawText("Pete (BLOCKED)", 155, 52, 16, rl.White)
+					rl.DrawText("The Lottery Co.", 155, 102, 16, rl.White)
+					rl.DrawText("Lukas", 155, 152, 16, rl.White)
+
+					//subtitles
+					rl.DrawText("Subject: Please listen to me...", 155, 65, 14, rl.White)
+					rl.DrawText("Subject: You have won a free car", 155, 115, 14, rl.White)
+					rl.DrawText("Subject: Soon...", 155, 165, 14, rl.White)
+
+					if real_email_popout1 == true {
+						rl.DrawTexture(popout, 300, 25, rl.White)
+						//add text inside drawing
+
+						rl.DrawText("From: Pete (BLOCKED)\tDate: 15/08\nDude,\nI really don't think you should be getting involved \nwith these guys, I had a look at the stuff you \nsent me earlier today and it sounds really... weird.\n\nPlease respond, we gotta talk.", 315, 35, 14, rl.White)
+
+						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(640, 35), 10) {
+							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+								real_email_popout1 = false
+							}
+						}
+					}
+					if real_email_popout2 == true {
+						rl.DrawTexture(popout, 310, 35, rl.White)
+						rl.DrawText("From: The Lottery Co.\t16/08\nYOU WON A FREE CAR!!!!\nCALL US NOW ON +44 (0)7314982430 TO\nCLAIM YOUR FREE 2001 HONDA CIVIC!!!!", 325, 45, 14, rl.White)
+						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(650, 45), 10) {
+							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+								real_email_popout2 = false
+							}
+						}
+					}
+					if real_email_popout3 == true {
+						rl.DrawTexture(popout, 320, 45, rl.White)
+						rl.DrawText("From: Lukas (SB)\t30/10\nGood evening,\nfirst:\nFestival will be fulfilled In the Very next Evening.\nEach Individual shall Get all He can Think of.\nthe brotherhood looks forward to seeing you,\n\nLukas", 335, 55, 14, rl.White)
+						if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(660, 65), 10) {
+							if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+								real_email_popout3 = false
+							}
+						}
+					}
+
+					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 50, 300, 48)) {
+						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+							real_email_popout1 = !real_email_popout1
+						}
+					}
+					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 100, 300, 48)) {
+						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+							real_email_popout2 = !real_email_popout2
+						}
+					}
+					if rl.CheckCollisionPointRec(rl.GetMousePosition(), rl.NewRectangle(150, 150, 300, 48)) {
+						if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
+							real_email_popout3 = !real_email_popout3
+						}
+					}
 				}
 
 			}
@@ -281,7 +346,7 @@ func main() {
 				populateFileExplorer(fileExplorerTextures, popout, fxEmail)
 				if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(395+float32(popout.Width), 35), 10) {
 					if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-						file_explorer_popout = false
+						file_explorer_popout = !file_explorer_popout
 					}
 				}
 			}
@@ -289,14 +354,14 @@ func main() {
 			//Collision check on email icon
 			if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(45, float32(rl.GetScreenHeight()-40)), 18) {
 				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-					email_popout = true
+					email_popout = !email_popout 
 				}
 			}
 
 			// Collision on file explorer icon
 			if rl.CheckCollisionPointCircle(rl.GetMousePosition(), rl.NewVector2(90, float32(rl.GetScreenHeight()-40)), 18) {
 				if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
-					file_explorer_popout = true
+					file_explorer_popout = !file_explorer_popout 
 				}
 			}
 		}
