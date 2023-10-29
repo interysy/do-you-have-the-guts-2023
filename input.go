@@ -4,9 +4,11 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-var passwordString = "1234"
+var passwordString = "5395"
 var input = ""
 var prev = rl.KeyNull
+var fadeAlpha2 float32 = 0
+var fadeAlpha3 float32 = 0
 
 func getInput() bool {
 	key := rl.GetKeyPressed()
@@ -56,8 +58,7 @@ func getInput() bool {
 	prev = int(key)
 	if len(input) >= 4 {
 		if passwordString == input {
-			fxScream := rl.LoadSound("assets/audio/scream.ogg")
-			rl.PlaySound(fxScream)
+
 			return true
 		}
 		return false
